@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane alignment="TOP_CENTER" hgap="10" vgap="10" minHeight="400.0" minWidth="500.0" prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<GridPane alignment="TOP_CENTER" hgap="10" minHeight="400.0" minWidth="500.0" prefHeight="400.0" prefWidth="500.0" vgap="10" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <columnConstraints>
       <ColumnConstraints />
       <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" minWidth="300.0" prefWidth="300.0" />
@@ -14,12 +14,12 @@
       <RowConstraints vgrow="NEVER" />
       <RowConstraints vgrow="NEVER" />
       <RowConstraints vgrow="NEVER" />
-      <RowConstraints vgrow="NEVER" />
+      <RowConstraints vgrow="ALWAYS" />
    </rowConstraints>
    <children>
-      <TextField promptText="Tourname" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <TextField promptText="Distanz" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <Button defaultButton="true" mnemonicParsing="false" text="Hinzufügen" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+      <TextField fx:id="tournameTextfield" promptText="Tourname" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <TextField fx:id="distanzTextfield" promptText="Distanz" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Button defaultButton="true" mnemonicParsing="false" onAction="#saveAction" text="Hinzufügen" GridPane.columnIndex="2" GridPane.rowIndex="2" />
       <MenuBar prefHeight="29.0" prefWidth="453.0" GridPane.columnSpan="3">
         <menus>
           <Menu mnemonicParsing="false" text="File">
@@ -41,13 +41,14 @@
       </MenuBar>
       <Label text="Name" GridPane.rowIndex="1" />
       <Label text="Distanz" GridPane.rowIndex="2" />
-      <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="3">
-        <columns>
-          <TableColumn prefWidth="75.0" text="C2" />
-        </columns>
+      <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="3">
+         <columns>
+            <TableColumn fx:id="tournameColumn" minWidth="200.0" prefWidth="251.0" text="Name" />
+            <TableColumn fx:id="distanzColumn" minWidth="100.0" prefWidth="164.0" text="Distanz" />
+         </columns>
       </TableView>
    </children>
    <padding>
-      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+      <Insets bottom="5.0" left="5.0" right="5.0" top="0.0" />
    </padding>
 </GridPane>
