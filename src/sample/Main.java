@@ -10,10 +10,11 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
-        primaryStage.setTitle("Tour Planner");
-        primaryStage.setScene(new Scene(root, 500, 275));
-        primaryStage.setMinWidth(400);
+        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        primaryStage.setTitle("TourPlanner");
+        primaryStage.setScene(new Scene(root, 450, 550));
+        primaryStage.setMinWidth(450);
+        primaryStage.setMinHeight(550);
         primaryStage.show();
     }
 
