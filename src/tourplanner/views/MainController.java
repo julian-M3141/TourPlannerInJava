@@ -8,6 +8,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import javafx.event.ActionEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.util.Callback;
+import tourplanner.models.Tour;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -30,13 +32,29 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        tourlist.setItems(viewModel.getNames());
+        tourlist.setItems(viewModel.getData());
+        tourlist.setCellFactory(new Callback<ListView<Tour>, ListCell<Tour>>() {
+            @Override
+            public ListCell call(ListView listView) {
+                ListCell<Tour> cell = new ListCell<>(){
+                    @Override
+                    protected void updateItem(Tour tour,boolean empty){
+                        super.updateItem(tour,empty);
+                        if(tour!=null){
+                            setText(tour.getTourname());
+                        }
+                    }
+                };
+                return cell;
+            }
+        });
         tourlist.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 viewModel.select(tourlist.getSelectionModel().getSelectedItem());
             }
         });
+        Bindings.bindBidirectional(searchbox.textProperty(),viewModel.searchProperty());
         Bindings.bindBidirectional(tourtitle.textProperty(),viewModel.tournameProperty());
         Bindings.bindBidirectional(finish.textProperty(),viewModel.finishProperty());
         Bindings.bindBidirectional(start.textProperty(),viewModel.startProperty());

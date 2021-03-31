@@ -46,6 +46,9 @@ public class TourDBMock implements DataAccess<Tour>{
 
     @Override
     public ArrayList<Tour> search(String search) {
+        if(search==null || search.isEmpty()){
+            return tours;
+        }
         ArrayList<Tour> tmp = new ArrayList<>();
         for(Tour t : tours){
             if(t.getTourname().contains(search)||t.getDescription().contains(search)){
