@@ -1,4 +1,4 @@
-package sample;
+package tourplanner.views;
 
 import javafx.beans.binding.Bindings;
 import javafx.event.EventHandler;

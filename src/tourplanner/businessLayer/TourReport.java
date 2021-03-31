@@ -1,16 +1,18 @@
-package sample;
+package tourplanner.businessLayer;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import tourplanner.models.Log;
+import tourplanner.models.Tour;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 public class TourReport {
     public void print(Tour tour) throws IOException {
@@ -25,7 +27,8 @@ public class TourReport {
         info.setModificationDate(Calendar.getInstance());
 
         //create new page
-        PDPage page = new PDPage();
+        //default us-letter, set to a4
+        PDPage page = new PDPage(PDRectangle.A4);
         document.addPage(page);
 
         //create new stream
@@ -35,7 +38,7 @@ public class TourReport {
         stream.beginText();
 
         //set font size
-        stream.setFont(PDType1Font.TIMES_ROMAN,24);
+        stream.setFont(PDType1Font.TIMES_BOLD,24);
         //set position
         stream.newLineAtOffset(25,750);
         //write to stream
@@ -55,6 +58,7 @@ public class TourReport {
         stream.setLeading(14.5f);
         stream.showText(tour.getDescription());
 
+        stream.newLine();
         stream.newLine();
         stream.showText("Logs:");
         stream.newLine();

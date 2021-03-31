@@ -1,7 +1,9 @@
-package sample;
+package tourplanner.businessLayer;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import tourplanner.models.Log;
+import tourplanner.models.Tour;
 
 import java.io.File;
 import java.io.FileNotFoundException;

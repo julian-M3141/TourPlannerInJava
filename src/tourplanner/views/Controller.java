@@ -1,9 +1,9 @@
-package sample;
+package tourplanner.views;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import java.awt.*;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 

@@ -1,10 +1,11 @@
-package sample;
+package tourplanner.views;
 
-import javafx.beans.property.Property;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import tourplanner.models.Log;
+import tourplanner.models.Tour;
 
 import java.util.ArrayList;
 

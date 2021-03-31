@@ -1,4 +1,4 @@
-package sample;
+package tourplanner.businessLayer;
 
 import org.json.JSONObject;
 
