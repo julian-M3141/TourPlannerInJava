@@ -6,71 +6,107 @@ import javafx.beans.property.StringProperty;
 import java.util.ArrayList;
 
 public class Tour {
-    private final StringProperty tourname;
-    private final StringProperty distance;
-    private final StringProperty start;
-    private final StringProperty finish;
-    private final StringProperty description;
-    private final ArrayList<Log> logs;
+    private String tourname;
+    private String distance;
+    private String start;
+    private String finish;
+    private String description;
+    private ArrayList<Log> logs;
 
-    public Tour(String username, String points,String start,String description, String finish){
-        this.tourname = new SimpleStringProperty(username);
-        this.distance = new SimpleStringProperty(points);
-        this.finish = new SimpleStringProperty(finish);
-        this.start = new SimpleStringProperty(start);
-        this.description = new SimpleStringProperty(description);
+    public static class Builder {
+        private String tourname=null;
+        private String distance=null;
+        private String start=null;
+        private String finish=null;
+        private String description=null;
+        private ArrayList<Log> logs=null;
+
+        public Builder setTourname(String tourname) {
+            this.tourname = tourname;
+            return this;
+        }
+
+        public Builder setDistance(String distance) {
+            this.distance = distance;
+            return this;
+        }
+
+        public Builder setFinish(String finish) {
+            this.finish = finish;
+            return this;
+        }
+
+        public Builder setStart(String start) {
+            this.start = start;
+            return this;
+        }
+
+        public Builder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder setLogs(ArrayList<Log> logs) {
+            this.logs = logs;
+            return this;
+        }
+        public Tour build(){
+            if(logs==null)
+                logs = new ArrayList<Log>();
+            return new Tour(tourname,distance,start,description,finish,logs);
+        }
+    };
+
+    public Tour(String tourname, String distance,String start,String description, String finish){
+        this.tourname = tourname;
+        this.distance = distance;
+        this.finish = finish;
+        this.start = start;
+        this.description = description;
         this.logs = new ArrayList<Log>();
     }
 
-    public Tour(String username, String points,String start, String finish,String description, ArrayList<Log> logs){
-        this.tourname = new SimpleStringProperty(username);
-        this.distance = new SimpleStringProperty(points);
-        this.finish = new SimpleStringProperty(finish);
-        this.start = new SimpleStringProperty(start);
-        this.description = new SimpleStringProperty(description);
+    public Tour(String tourname, String distance,String start, String finish,String description, ArrayList<Log> logs){
+        this.tourname = tourname;
+        this.distance = distance;
+        this.finish = finish;
+        this.start = start;
         this.logs = logs;
+        this.description = description;
     }
 
     public Tour(StringProperty tourname, StringProperty distance,StringProperty start, StringProperty finish,StringProperty description, ArrayList<Log> logs) {
-        this.tourname = tourname;
-        this.distance = distance;
-        this.finish = finish;
-        this.start = start;
+        this.tourname = tourname.get();
+        this.distance = distance.get();
+        this.finish = finish.get();
+        this.start = start.get();
         this.logs = logs;
-        this.description = description;
+        this.description = description.get();
     }
 
     public Tour(StringProperty tourname,StringProperty start, StringProperty finish, StringProperty distance,StringProperty description) {
-        this.tourname = tourname;
-        this.distance = distance;
-        this.finish = finish;
-        this.start = start;
-        this.description = description;
+        this.tourname = tourname.get();
+        this.distance = distance.get();
+        this.finish = finish.get();
+        this.start = start.get();
+        this.description = description.get();
         this.logs = new ArrayList<Log>();
     }
 
     public String getDistance() {
-        return distance.get();
-    }
-
-    public void setDistance(String distance){
-        this.distance.set(distance);
-    }
-
-    public StringProperty distanceProperty() {
         return distance;
     }
 
-    public String getTourname() {
-        return tourname.get();
+    public StringProperty distanceProperty() {
+        return new SimpleStringProperty(distance);
     }
 
-    public void setTourname(String tourname){
-        this.tourname.set(tourname);
+    public String getTourname() {
+        return tourname;
     }
 
     public StringProperty tournameProperty() {
-        return tourname;
+        return new SimpleStringProperty(tourname);
     }
 
     public ArrayList<Log> getLogs() {
@@ -78,26 +114,20 @@ public class Tour {
     }
 
     public String getStart() {
-        return start.get();
-    }
-
-    public StringProperty startProperty() {
         return start;
     }
 
-    public String getFinish() {
-        return finish.get();
+    public StringProperty startProperty() {
+        return new SimpleStringProperty(start);
     }
 
-    public StringProperty finishProperty() {
+    public String getFinish() {
         return finish;
     }
 
-    public String getDescription() {
-        return description.get();
-    }
+    public StringProperty finishProperty() { return new SimpleStringProperty(finish); }
 
-    public StringProperty descriptionProperty() {
-        return description;
-    }
+    public String getDescription() { return description; }
+
+    public StringProperty descriptionProperty() { return new SimpleStringProperty(description); }
 }
