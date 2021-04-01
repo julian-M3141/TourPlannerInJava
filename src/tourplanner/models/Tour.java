@@ -6,6 +6,30 @@ import javafx.beans.property.StringProperty;
 import java.util.ArrayList;
 
 public class Tour {
+    public void setTourname(String tourname) {
+        this.tourname = tourname;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
+
+    public void setStart(String start) {
+        this.start = start;
+    }
+
+    public void setFinish(String finish) {
+        this.finish = finish;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setLogs(ArrayList<Log> logs) {
+        this.logs = logs;
+    }
+
     private String tourname;
     private String distance;
     private String start;
@@ -53,11 +77,11 @@ public class Tour {
         public Tour build(){
             if(logs==null)
                 logs = new ArrayList<Log>();
-            return new Tour(tourname,distance,start,description,finish,logs);
+            return new Tour(tourname,distance,start,finish,description,logs);
         }
     };
 
-    public Tour(String tourname, String distance,String start,String description, String finish){
+    public Tour(String tourname, String distance,String start,String finish,String description){
         this.tourname = tourname;
         this.distance = distance;
         this.finish = finish;

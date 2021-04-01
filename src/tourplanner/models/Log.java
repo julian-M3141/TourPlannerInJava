@@ -4,6 +4,18 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Log {
+    public void setDate(String date) {
+        this.date.set(date);
+    }
+
+    public void setTime(String time) {
+        this.time.set(time);
+    }
+
+    public void setRating(String rating) {
+        this.rating.set(rating);
+    }
+
     private final StringProperty date;
     private final StringProperty time;
     private final StringProperty rating;

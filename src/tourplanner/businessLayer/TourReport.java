@@ -77,7 +77,7 @@ public class TourReport {
         stream.endText();
         stream.close();
 
-        document.save("test.pdf");
+        document.save(tour.getTourname().replace(' ','_')+".pdf");
         document.close();
 
     }

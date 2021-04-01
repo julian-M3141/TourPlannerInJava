@@ -22,13 +22,15 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="550.0" minWidth="600.0" prefHeight="550.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tourplanner.views.MainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="550.0" minWidth="600.0" prefHeight="550.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tourplanner.gui.controller.MainController">
    <children>
       <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
+                  <MenuItem mnemonicParsing="false" text="Import" />
+              <MenuItem mnemonicParsing="false" onAction="#export" text="Export" />
+                  <MenuItem mnemonicParsing="false" onAction="#print" text="Print" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
@@ -46,7 +48,7 @@
       <HBox alignment="CENTER_RIGHT" layoutY="29.0" maxHeight="42.0" minHeight="42.0" prefHeight="42.0" prefWidth="600.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
          <children>
             <TextField fx:id="searchbox" promptText="Search" HBox.hgrow="ALWAYS" />
-            <Button mnemonicParsing="false" onAction="#search" text="Search" HBox.hgrow="NEVER">
+            <Button defaultButton="true" mnemonicParsing="false" onAction="#search" text="Search" HBox.hgrow="NEVER">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
@@ -61,9 +63,9 @@
                      <children>
                         <Label minWidth="30.0" text="Tours" />
                         <Region prefHeight="42.0" prefWidth="18.0" HBox.hgrow="ALWAYS" />
-                        <Button mnemonicParsing="false" text="+" />
-                        <Button minWidth="29.0" mnemonicParsing="false" text="-" />
-                        <Button mnemonicParsing="false" text="[]" />
+                        <Button mnemonicParsing="false" onAction="#newTour" text="+" />
+                        <Button minWidth="29.0" mnemonicParsing="false" onAction="#deleteTour" text="-" />
+                        <Button mnemonicParsing="false" onAction="#updateTour" text="[]" />
                      </children>
                   </HBox>
                   <ListView fx:id="tourlist" layoutX="-48.0" layoutY="42.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="42.0" />
@@ -78,8 +80,8 @@
                               <Font size="20.0" />
                            </font></Label>
                         <Region prefHeight="42.0" prefWidth="23.0" HBox.hgrow="ALWAYS" />
-                        <Button minWidth="40.0" mnemonicParsing="false" onAction="#edit" text="Edit" HBox.hgrow="NEVER" />
-                        <Button mnemonicParsing="false" text="Delete" HBox.hgrow="NEVER" />
+                        <Button minWidth="40.0" mnemonicParsing="false" onAction="#updateTour" text="Edit" HBox.hgrow="NEVER" />
+                        <Button mnemonicParsing="false" onAction="#deleteTour" text="Delete" HBox.hgrow="NEVER" />
                      </children>
                   </HBox>
                   <GridPane layoutY="42.0" maxHeight="60.0" minHeight="60.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
@@ -119,9 +121,9 @@
                                   </Tab>
                                   <Tab text="Bild">
                                     <content>
-                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                      <AnchorPane fx:id="imagepane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                              <children>
-                                                <ImageView fx:id="image" fitHeight="150.0" fitWidth="200.0" layoutX="-14.0" layoutY="-37.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                <ImageView fx:id="image" fitHeight="400.0" fitWidth="600.0" layoutX="-14.0" layoutY="-37.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                              </children>
                                           </AnchorPane>
                                     </content>
@@ -136,9 +138,9 @@
                                  <children>
                                     <Label minWidth="30.0" prefHeight="16.0" prefWidth="186.0" text="Logs" HBox.hgrow="NEVER" />
                                     <Region minWidth="0.0" prefHeight="26.0" prefWidth="296.0" HBox.hgrow="ALWAYS" />
-                                    <Button fx:id="addLog" mnemonicParsing="false" text="+" HBox.hgrow="NEVER" />
-                                    <Button fx:id="deleteLog" minWidth="29.0" mnemonicParsing="false" text="-" HBox.hgrow="NEVER" />
-                                    <Button mnemonicParsing="false" text="[]" HBox.hgrow="NEVER" />
+                                    <Button fx:id="addLog" mnemonicParsing="false" onAction="#addLog" text="+" HBox.hgrow="NEVER" />
+                                    <Button fx:id="deleteLog" minWidth="29.0" mnemonicParsing="false" onAction="#deleteLog" text="-" HBox.hgrow="NEVER" />
+                                    <Button mnemonicParsing="false" onAction="#updateLog" text="[]" HBox.hgrow="NEVER" />
                                  </children>
                               </HBox>
                               <TableView fx:id="logs" layoutY="26.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
