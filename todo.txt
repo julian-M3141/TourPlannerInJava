@@ -1,5 +1,8 @@
 ToDo - Liste
 
+* Config File and Config Class
+
+
 * Logs aktualisieren nach update
 * nach delete selected tour updaten
 * Businesslayer Klasse als Manager erstellen oder im MVM?
@@ -9,6 +12,8 @@ ToDo - Liste
 * delete wenn noch keine tour ausgewählt wurde -> Lösung ist selectedTour zu deleten/updaten
 * Kommentare!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 * Klasse zur Berechnung von Pace,Geschwindigkeit, Kalorien
+* Moduls statt packages
+
 
 Kleinere ToDos:
 * PDF aufhübschen und Daten ausbessern

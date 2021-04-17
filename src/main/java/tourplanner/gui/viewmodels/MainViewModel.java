@@ -22,7 +22,7 @@ import tourplanner.models.Tour;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
 
 public class MainViewModel {
@@ -172,7 +172,7 @@ public class MainViewModel {
     public void newTour(){
         Parent root;
         try{
-            root = FXMLLoader.load(getClass().getResource("../views/tourForm.fxml"));
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/views/tourForm.fxml")));
             Stage stage = new Stage();
             stage.setTitle("Neue Tour erstellen");
             stage.setScene(new Scene(root,600,400));
@@ -189,7 +189,7 @@ public class MainViewModel {
 
     public void updateTour(){
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/tourForm.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/tourForm.fxml"));
             Stage stage = new Stage();
             stage.setTitle("Tour bearbeiten");
             stage.setScene(new Scene(loader.load(),600,400));
@@ -209,7 +209,7 @@ public class MainViewModel {
 
     public void addLog() {
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/logForm.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/logForm.fxml"));
             Stage stage = new Stage();
             stage.setTitle("Neue Logeintrag erstellen");
             stage.setScene(new Scene(loader.load(),600,395));
@@ -230,7 +230,7 @@ public class MainViewModel {
     public void updateLog(Object log) {
         if(log != null){
             try{
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/logForm.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/logForm.fxml"));
                 Stage stage = new Stage();
                 stage.setTitle("Neue Logeintrag erstellen");
                 stage.setScene(new Scene(loader.load(), 600, 395));
