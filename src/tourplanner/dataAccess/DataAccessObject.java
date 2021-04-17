@@ -3,17 +3,25 @@ package tourplanner.dataAccess;
 import tourplanner.models.Log;
 import tourplanner.models.Tour;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 
 public class DataAccessObject {
-    DataAccess dataAccess = null;
+    DataAccess dataAccess;
 
     //constructor
     //decide which implementation used
     private DataAccessObject(){
         if (true) {
+            try {
+                dataAccess = new DataAccessDataBase();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+                dataAccess = new TourDBMock();
+            }
+        }else{
             dataAccess = new TourDBMock();
         }
     }
@@ -59,5 +67,8 @@ public class DataAccessObject {
     }
     public void delete(Tour tour,Log log){
         dataAccess.delete(tour, log);
+    }
+    public Tour getLast(){
+        return dataAccess.getLast();
     }
 }

@@ -33,8 +33,8 @@ public class FormController implements Initializable {
 
         //überschrift und button anpassen
         update = true;
-        tourname.setText(tour.getTourname());
-        distance.setText(tour.getDistance());
+        tourname.setText(tour.getName());
+        distance.setText(String.valueOf(tour.getDistance()));
         from.setText(tour.getStart());
         to.setText(tour.getFinish());
         description.setText(tour.getDescription());

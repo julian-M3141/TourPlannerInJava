@@ -11,6 +11,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Random;
 
 public class TourMap {
     public String getImage(String start, String finish){
@@ -48,12 +49,14 @@ public class TourMap {
                 .build();
 
         HttpResponse<byte[]> imageresponse = null;
+        String filename="";
         try {
             imageresponse = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
             byte[] imgInBytes = imageresponse.body();
             ByteArrayInputStream bis = new ByteArrayInputStream(imgInBytes);
             BufferedImage bImage2 = ImageIO.read(bis);
-            ImageIO.write(bImage2, "jpg", new File("test.jpg") );
+            filename = getUniqueFilename();
+            ImageIO.write(bImage2, "jpg", new File("pics/"+filename) );
             System.out.println("image created");
 
 
@@ -61,6 +64,20 @@ public class TourMap {
             e.printStackTrace();
             return "";
         }
-        return "";
+        return filename;
+    }
+
+    String getUniqueFilename(){
+        String filename="";
+        final String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        Random r = new Random();
+        do{
+            filename = "";
+            for(int i=0;i<10;++i){
+                filename += alphabet.charAt(r.nextInt(alphabet.length()));
+            }
+            filename += ".jpg";
+        }while (new File(filename).exists());
+        return filename;
     }
 }

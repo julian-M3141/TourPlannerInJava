@@ -28,14 +28,17 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-                  <MenuItem mnemonicParsing="false" text="Import" />
+                  <MenuItem mnemonicParsing="false" onAction="#importFile" text="Import" />
               <MenuItem mnemonicParsing="false" onAction="#export" text="Export" />
                   <MenuItem mnemonicParsing="false" onAction="#print" text="Print" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
+                  <MenuItem mnemonicParsing="false" onAction="#newTour" text="New Tour" />
+                  <MenuItem mnemonicParsing="false" onAction="#updateTour" text="Edit Tour" />
+              <MenuItem mnemonicParsing="false" onAction="#deleteTour" text="Delete Tour" />
+                  <MenuItem mnemonicParsing="false" onAction="#addLog" text="Add Log" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
@@ -148,6 +151,11 @@
                                   <TableColumn fx:id="date" prefWidth="75.0" text="Date" />
                                   <TableColumn fx:id="time" prefWidth="95.0" text="Total time" />
                                     <TableColumn fx:id="rating" prefWidth="55.0" text="Rating" />
+                                    <TableColumn fx:id="weather" prefWidth="75.0" text="Wetter" />
+                                    <TableColumn fx:id="sport" prefWidth="75.0" text="Sport" />
+                                    <TableColumn fx:id="steps" prefWidth="75.0" text="Schritte" />
+                                    <TableColumn fx:id="weight" prefWidth="75.0" text="Gewicht" />
+                                    <TableColumn fx:id="height" prefWidth="75.0" text="Größe" />
                                 </columns>
                               </TableView>
                            </children>

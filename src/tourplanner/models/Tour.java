@@ -1,56 +1,59 @@
 package tourplanner.models;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-
 import java.util.ArrayList;
 
 public class Tour {
-    public void setTourname(String tourname) {
-        this.tourname = tourname;
-    }
 
-    public void setDistance(String distance) {
-        this.distance = distance;
-    }
+    //private member variables
+    private int id;
+    private String name;
+    private String description;
+    private String start;
+    private String finish;
+    private int distance;
+    private String image;
+    private ArrayList<Log> logs;
 
-    public void setStart(String start) {
-        this.start = start;
-    }
-
-    public void setFinish(String finish) {
-        this.finish = finish;
-    }
-
-    public void setDescription(String description) {
+    //constructor
+    public Tour(int id, String name, String description, String start, String finish, int distance, String image, ArrayList<Log> logs) {
+        this.id = id;
+        this.name = name;
         this.description = description;
-    }
-
-    public void setLogs(ArrayList<Log> logs) {
+        this.start = start;
+        this.finish = finish;
+        this.distance = distance;
+        this.image = image;
         this.logs = logs;
     }
 
-    private String tourname;
-    private String distance;
-    private String start;
-    private String finish;
-    private String description;
-    private ArrayList<Log> logs;
+    public ArrayList<Log> getLogs() {
+        return logs;
+    }
 
+
+    //builder pattern
     public static class Builder {
-        private String tourname=null;
-        private String distance=null;
+        private int id=-1;
+
+        private String name=null;
+        private String description=null;
         private String start=null;
         private String finish=null;
-        private String description=null;
+        private int distance=-1;
+        private String image=null;
         private ArrayList<Log> logs=null;
 
-        public Builder setTourname(String tourname) {
-            this.tourname = tourname;
+        public Builder setId(int id) {
+            this.id = id;
             return this;
         }
 
-        public Builder setDistance(String distance) {
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder setDistance(int distance) {
             this.distance = distance;
             return this;
         }
@@ -70,88 +73,80 @@ public class Tour {
             return this;
         }
 
+        public Builder setImage(String image) {
+            this.image = image;
+            return this;
+        }
         public Builder setLogs(ArrayList<Log> logs) {
             this.logs = logs;
             return this;
         }
+
         public Tour build(){
+            if(name == null || description == null || start == null || finish == null || image == null || distance < 0){
+                throw new IllegalArgumentException("All instances have to be set!");
+            }
             if(logs==null)
                 logs = new ArrayList<Log>();
-            return new Tour(tourname,distance,start,finish,description,logs);
+            return new Tour(id,name,description,start,finish,distance,image,logs);
         }
+
     };
 
-    public Tour(String tourname, String distance,String start,String finish,String description){
-        this.tourname = tourname;
-        this.distance = distance;
-        this.finish = finish;
-        this.start = start;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
         this.description = description;
-        this.logs = new ArrayList<Log>();
-    }
-
-    public Tour(String tourname, String distance,String start, String finish,String description, ArrayList<Log> logs){
-        this.tourname = tourname;
-        this.distance = distance;
-        this.finish = finish;
-        this.start = start;
-        this.logs = logs;
-        this.description = description;
-    }
-
-    public Tour(StringProperty tourname, StringProperty distance,StringProperty start, StringProperty finish,StringProperty description, ArrayList<Log> logs) {
-        this.tourname = tourname.get();
-        this.distance = distance.get();
-        this.finish = finish.get();
-        this.start = start.get();
-        this.logs = logs;
-        this.description = description.get();
-    }
-
-    public Tour(StringProperty tourname,StringProperty start, StringProperty finish, StringProperty distance,StringProperty description) {
-        this.tourname = tourname.get();
-        this.distance = distance.get();
-        this.finish = finish.get();
-        this.start = start.get();
-        this.description = description.get();
-        this.logs = new ArrayList<Log>();
-    }
-
-    public String getDistance() {
-        return distance;
-    }
-
-    public StringProperty distanceProperty() {
-        return new SimpleStringProperty(distance);
-    }
-
-    public String getTourname() {
-        return tourname;
-    }
-
-    public StringProperty tournameProperty() {
-        return new SimpleStringProperty(tourname);
-    }
-
-    public ArrayList<Log> getLogs() {
-        return logs;
     }
 
     public String getStart() {
         return start;
     }
 
-    public StringProperty startProperty() {
-        return new SimpleStringProperty(start);
+    public void setStart(String start) {
+        this.start = start;
     }
 
     public String getFinish() {
         return finish;
     }
 
-    public StringProperty finishProperty() { return new SimpleStringProperty(finish); }
+    public void setFinish(String finish) {
+        this.finish = finish;
+    }
 
-    public String getDescription() { return description; }
+    public int getDistance() {
+        return distance;
+    }
 
-    public StringProperty descriptionProperty() { return new SimpleStringProperty(description); }
+    public void setDistance(int distance) {
+        this.distance = distance;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
 }

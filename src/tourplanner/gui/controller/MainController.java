@@ -12,9 +12,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 import tourplanner.gui.viewmodels.MainViewModel;
+import tourplanner.models.Log;
 import tourplanner.models.Tour;
 
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -31,6 +35,11 @@ public class MainController implements Initializable {
     public TableColumn date;
     public TableColumn time;
     public TableColumn rating;
+    public TableColumn weather;
+    public TableColumn sport;
+    public TableColumn steps;
+    public TableColumn height;
+    public TableColumn weight;
     public ImageView image;
     public AnchorPane imagepane;
 
@@ -46,7 +55,7 @@ public class MainController implements Initializable {
                     protected void updateItem(Tour tour,boolean empty){
                         super.updateItem(tour,empty);
                         if(tour!=null && !empty){
-                            setText(tour.getTourname());
+                            setText(tour.getName());
                         }else{
                             setText(null);
                         }
@@ -69,9 +78,66 @@ public class MainController implements Initializable {
         Bindings.bindBidirectional(description.textProperty(),viewModel.descriptionProperty());
         Bindings.bindBidirectional(image.imageProperty(),viewModel.imageProperty());
         image.fitHeightProperty().bind(imagepane.heightProperty());
-        date.setCellValueFactory(new PropertyValueFactory<>("date"));
-        time.setCellValueFactory(new PropertyValueFactory<>("time"));
+        //format date
+        date.setCellFactory(column -> {
+            TableCell<Log, LocalDateTime> cell = new TableCell<Log, LocalDateTime>() {
+                private DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm");
+
+                @Override
+                protected void updateItem(LocalDateTime item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if(empty) {
+                        setText(null);
+                    }
+                    else {
+                        setText(item.format(format));
+                    }
+                }
+            };
+
+            return cell;
+        });
+        date.setCellValueFactory(new PropertyValueFactory<>("time"));
+        time.setCellFactory(column -> {
+            TableCell<Log, Integer> cell = new TableCell<Log,Integer>() {
+                @Override
+                protected void updateItem(Integer item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if(empty) {
+                        setText(null);
+                    }
+                    else {
+                        //change format to hh:mm // now: hh:m bei min<10
+                        setText(item/60 + ":"+item%60);
+                    }
+                }
+            };
+
+            return cell;
+        });
+        time.setCellValueFactory(new PropertyValueFactory<>("timeinminutes"));
+        rating.setCellFactory(column -> {
+            TableCell<Log, Integer> cell = new TableCell<Log,Integer>() {
+                @Override
+                protected void updateItem(Integer item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if(empty) {
+                        setText(null);
+                    }
+                    else {
+                        setText("*".repeat(item));
+                    }
+                }
+            };
+
+            return cell;
+        });
         rating.setCellValueFactory(new PropertyValueFactory<>("rating"));
+        weather.setCellValueFactory(new PropertyValueFactory<>("weather"));
+        sport.setCellValueFactory(new PropertyValueFactory<>("sport"));
+        steps.setCellValueFactory(new PropertyValueFactory<>("steps"));
+        weight.setCellValueFactory(new PropertyValueFactory<>("weight"));
+        height.setCellValueFactory(new PropertyValueFactory<>("height"));
         logs.setItems(viewModel.getLogs());
     }
 
@@ -81,6 +147,14 @@ public class MainController implements Initializable {
     public void deleteLog(ActionEvent actionEvent){ viewModel.deleteLog(logs.getSelectionModel().getSelectedItem());}
     public void updateLog(ActionEvent actionEvent){ viewModel.updateLog(logs.getSelectionModel().getSelectedItem());}
     public void export(ActionEvent actionEvent){ viewModel.export();}
+    public void importFile(ActionEvent actionEvent){
+        TextInputDialog dialog = new TextInputDialog(".json");
+        dialog.setTitle("Tour importieren");
+        dialog.setContentText("Enter the filename:");
+
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(viewModel::importFile);
+    }
     public void print(ActionEvent actionEvent){ viewModel.print();}
     public void deleteTour(ActionEvent actionEvent){ viewModel.deleteTour(tourlist.getSelectionModel().getSelectedItem());}
 

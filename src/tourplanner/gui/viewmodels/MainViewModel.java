@@ -22,67 +22,54 @@ import tourplanner.models.Tour;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 public class MainViewModel {
+
     private final StringProperty search = new SimpleStringProperty("");
-
-
-
-    private ObjectProperty<Image> image = new SimpleObjectProperty<>();
-
+    private final ObjectProperty<Image> image = new SimpleObjectProperty<>();
     private final StringProperty tourname = new SimpleStringProperty("");
-
     private final StringProperty finish = new SimpleStringProperty("");
     private final StringProperty start = new SimpleStringProperty("");
     private final StringProperty distance = new SimpleStringProperty("");
     private final StringProperty description = new SimpleStringProperty("");
     private Tour selectedTour;
-    private DataAccessObject dao = DataAccessObject.Instance();
-    private FileHandler handler = new FileHandler();
-    private TourReport report = new TourReport();
+    private final DataAccessObject dao = DataAccessObject.Instance();
+    private final FileHandler handler = new FileHandler();
+    private final TourReport report = new TourReport();
 
+    private final ObservableList<Tour> data = FXCollections.observableArrayList(dao.getAllTours());
 
+    private final ObservableList<Log> logs = FXCollections.observableArrayList();
 
+    //constructor
+    public MainViewModel(){
+        //set tour and data
+        selectedTour = data.get(0);
+        setTourData();
+        setLogs();
 
-    public String getSearch() {
-        return search.get();
     }
+
+    private void setTourData(){
+        tourname.set(selectedTour.getName());
+        finish.set(selectedTour.getFinish());
+        start.set(selectedTour.getStart());
+        distance.set(selectedTour.getDistance() + " km");
+        description.set(selectedTour.getDescription());
+        try {
+            image.set(new Image(new FileInputStream("pics/"+selectedTour.getImage())));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     public StringProperty searchProperty() {
         return search;
     }
     public ObjectProperty<Image> imageProperty() {
         return image;
-    }
-    private void setTourData(){
-        tourname.set(selectedTour.tournameProperty().get());
-        finish.set(selectedTour.finishProperty().get());
-        start.set(selectedTour.startProperty().get());
-        distance.set(selectedTour.distanceProperty().get());
-        description.set(selectedTour.descriptionProperty().get());
-    }
-
-
-    private ObservableList<Tour> data = FXCollections.observableArrayList(dao.getAllTours());
-
-    private final ObservableList<Log> logs = FXCollections.observableArrayList();
-    private final ObservableList<String> names; // = FXCollections.observableArrayList("Lange Tour","Kurze Tour");
-
-    //constructor
-    public MainViewModel(){
-        ArrayList<String> list = new ArrayList<>();
-        for(Tour i : data){
-            list.add(i.getTourname());
-        }
-        names =  FXCollections.observableArrayList(list);
-        selectedTour = data.get(0);
-        setTourData();
-        setLogs();
-        try {
-            image.set(new Image(new FileInputStream("test.jpg")));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
     private void setLogs() {
@@ -92,10 +79,6 @@ public class MainViewModel {
 
     public ObservableList<Tour> getData() {
         return data;
-    }
-
-    public ObservableList<String> getNames() {
-        return names;
     }
 
     public Tour getTour() {
@@ -119,7 +102,7 @@ public class MainViewModel {
             selectedTour = (Tour) selectedItem;
             setTourData();
             setLogs();
-            System.out.println("clicked on " + ((Tour) selectedItem).getTourname());
+            System.out.println("clicked on " + ((Tour) selectedItem).getName());
         }
     }
 
@@ -159,11 +142,21 @@ public class MainViewModel {
 
     public void export(){
         try {
-            handler.export(selectedTour,selectedTour.getTourname().replace(' ','_')+".json");
+            handler.export(selectedTour,selectedTour.getName().replace(' ','_')+".json");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+    public void importFile(String filename) {
+        try {
+            dao.saveTour(handler.importTour(filename));
+            refresh();
+            select(dao.getLast());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void deleteTour(Object tour) {
         dao.deleteTour((Tour) tour);
         refresh();
@@ -172,12 +165,8 @@ public class MainViewModel {
     public void refresh(){
         data.clear();
         data.addAll(dao.getAllTours());
-        try{
-            //maybe change to last edited
-            select(data.get(0));
-        }catch (IndexOutOfBoundsException e){
-            e.printStackTrace();
-        }
+        Optional<Tour> t = dao.getTour(selectedTour.getId());
+        t.ifPresent(this::select);
     }
 
     public void newTour(){
@@ -191,6 +180,7 @@ public class MainViewModel {
             System.out.println("new window");
             stage.setOnHiding(e ->{
                 refresh();
+                select(dao.getLast());
             });
         }catch (IOException e){
             e.printStackTrace();
@@ -210,6 +200,7 @@ public class MainViewModel {
             stage.show();
             stage.setOnHiding(e ->{
                 refresh();
+                //select(selectedTour);
             });
         }catch (IOException e){
             e.printStackTrace();
@@ -226,7 +217,8 @@ public class MainViewModel {
             LogFormController controller = loader.getController();
             controller.initTour(selectedTour);
             stage.show();
-            stage.setOnHiding(e ->{
+            stage.setOnHiding(e -> {
+                refresh();
                 setLogs();
             });
         }catch (IOException e){
@@ -248,6 +240,7 @@ public class MainViewModel {
                 controller.initData((Log)log);
                 stage.show();
                 stage.setOnHiding(e -> {
+                    refresh();
                     setLogs();
                 });
             }catch (IOException e){

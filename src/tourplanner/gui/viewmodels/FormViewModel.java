@@ -2,6 +2,7 @@ package tourplanner.gui.viewmodels;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import tourplanner.businessLayer.TourMap;
 import tourplanner.dataAccess.DataAccessObject;
 import tourplanner.models.Tour;
 
@@ -14,26 +15,27 @@ public class FormViewModel {
     private final StringProperty distance = new SimpleStringProperty("");
     private final StringProperty description = new SimpleStringProperty("");
 
-    private DataAccessObject dao = DataAccessObject.Instance();
-
-    //private final TourMap map = new TourMap();
+    private final DataAccessObject dao = DataAccessObject.Instance();
+    private final TourMap map = new TourMap();
 
 
     public void saveData() {
         Tour t = new Tour.Builder()
-                .setTourname(tourname.get())
+                .setId(-1)
+                .setName(tourname.get())
                 .setDescription(description.get())
-                .setDistance(distance.get())
+                .setDistance(Integer.parseInt(distance.get()))
                 .setStart(from.get())
                 .setFinish(to.get())
+                .setImage(map.getImage(from.get(),to.get()))
                 .build();
-        //map.getImage(t.getStart(),t.getFinish());
         dao.saveTour(t);
     }
 
     public void updateTour(Tour tour){
         //update method will later be edited
         HashMap<String,String> params = new HashMap<>();
+        //maybe update image //also delete old image
         params.put("Tourname",getTourname());
         params.put("Distanz",getDistance());
         params.put("Von",getFrom());

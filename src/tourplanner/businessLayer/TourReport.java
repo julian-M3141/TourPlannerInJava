@@ -20,9 +20,9 @@ public class TourReport {
         PDDocumentInformation info = document.getDocumentInformation();
         //set information
         info.setAuthor("TourPlanner");
-        info.setTitle(tour.getTourname());
+        info.setTitle(tour.getName());
         info.setCreator("TourPlanner");
-        info.setSubject("Tour "+tour.getTourname());
+        info.setSubject("Tour "+tour.getName());
         info.setCreationDate(Calendar.getInstance());
         info.setModificationDate(Calendar.getInstance());
 
@@ -42,7 +42,7 @@ public class TourReport {
         //set position
         stream.newLineAtOffset(25,750);
         //write to stream
-        stream.showText(tour.getTourname());
+        stream.showText(tour.getName());
 
 
         stream.endText();
@@ -66,7 +66,7 @@ public class TourReport {
         for(int i=0;i<logs.size(); ++i){
             stream.showText("Log "+(i+1));
             stream.newLine();
-            stream.showText("Datum: "+logs.get(i).getDate());
+            stream.showText("Datum: "+logs.get(i).getTime());
             stream.newLine();
             stream.showText("Zeit: "+logs.get(i).getTime());
             stream.newLine();
@@ -77,7 +77,7 @@ public class TourReport {
         stream.endText();
         stream.close();
 
-        document.save(tour.getTourname().replace(' ','_')+".pdf");
+        document.save(tour.getName().replace(' ','_')+".pdf");
         document.close();
 
     }
