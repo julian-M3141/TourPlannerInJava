@@ -1,0 +1,71 @@
+ToDo - Liste
+
+* Logs aktualisieren nach update
+* nach delete selected tour updaten
+* Businesslayer Klasse als Manager erstellen oder im MVM?
+* Summarize Report
+* Config File
+* teils deutsch/teils englisch
+* delete wenn noch keine tour ausgewählt wurde -> Lösung ist selectedTour zu deleten/updaten
+* Kommentare!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+* Klasse zur Berechnung von Pace,Geschwindigkeit, Kalorien
+
+Kleinere ToDos:
+* PDF aufhübschen und Daten ausbessern
+* Suche abbrechen button
+* Fenster auf Größe bearbeiten
+* Menuitem delete tour funktioniert nicht
+* alert je nach situation
+* nach delete tour auswählen
+* bei tourmap auf flscshe eingaben überprüfen
+* Zielordner bei export und print auf Downloads setzen
+
+
+Fragen:
+* Für Formular ein eigenes Fenster?
+* Textsuche in der DB?
+
+
+#DataBase
+#src: https://medium.com/coding-blocks/creating-user-database-and-adding-access-on-postgresql-8bfcd2f4a91e
+#create user and db (im terminal)
+sudo -u postgres createuser tourplanner
+sudo -u postgres createdb tourplanner
+
+#create pwd for user and grant db rights
+sudo -u postgres psql
+alter user tourplanner with encrypted password 'geheimesTourPlannerPasswort';
+grant all privileges on database tourplanner to tourplanner;
+
+
+#create tables
+create table if not exists tour(
+    TourID serial primary key,
+    Name varchar(255) not null unique,
+    Description text not null,
+    Start varchar(255) not null,
+    Finish varchar(255) not null,
+    Distance varchar(255) not null,
+    Image varchar(255) not null unique
+);
+create table if not exists logs(
+    LogID serial primary key,
+    TourID int not null,
+    Time timestamp not null,
+    Rating int check ( Rating > 0 and Rating < 6) not null,
+    TimeInMinutes int check ( TimeInMinutes > 0 ) not null,
+    Distance int check ( Distance > 0 ) not null,
+    Weather varchar(20) check ( Weather in ('Sunny','Rain','Cloudy','Foggy','Snowfall') ) not null,
+    Weight int check ( Weight > 0 ) not null,
+    Height int check ( Height > 0 ) not null,
+    Sport varchar(20) check ( Sport in ('Running','Bicycle','Hiking') ) not null,
+    Schrittanzahl int check ( Schrittanzahl> 0 ) not null,
+    CONSTRAINT fk_tour
+        FOREIGN KEY(TourID)
+            REFERENCES Tour(TourID)
+                ON DELETE CASCADE
+);
+
+
+
+
