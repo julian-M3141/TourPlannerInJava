@@ -1,8 +1,11 @@
 package tourplanner.gui.controller;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
@@ -10,6 +13,8 @@ import javafx.event.ActionEvent;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import tourplanner.gui.viewmodels.MainViewModel;
 import tourplanner.models.Log;
@@ -24,6 +29,19 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable {
     private final MainViewModel viewModel = new MainViewModel();
 
+    private DoubleProperty scale = new SimpleDoubleProperty(1);
+    private final DoubleProperty fontsize = new SimpleDoubleProperty(20);
+
+    //for scaling
+    public AnchorPane anchorpane;
+    public HBox hbox;
+    public HBox hboxtourbar;
+    public HBox hboxtourname;
+    public HBox hboxlog;
+    public SplitPane splitpane;
+    public SplitPane splitpanetour;
+    public GridPane gridpanedata;
+    //end
     public TextField searchbox;
     public ListView tourlist;
     public Label tourtitle;
@@ -46,6 +64,24 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        //do some scaling
+        anchorpane.setStyle("-fx-font-size: "+ 12 * 2);
+        hbox.setLayoutY(62);
+        AnchorPane.setTopAnchor(splitpane, 120.0);
+        tourtitle.setStyle("-fx-font-size: 48");
+        hboxtourbar.setMinHeight(hboxtourbar.getPrefHeight()*1.5);
+        AnchorPane.setTopAnchor(tourlist,63.);
+        hboxtourname.setMinHeight(hboxtourname.getPrefHeight()*1.5);
+        gridpanedata.setLayoutY(gridpanedata.getLayoutY()*1.5);
+        AnchorPane.setTopAnchor(splitpanetour,AnchorPane.getTopAnchor(splitpanetour)*1.5);
+        hboxlog.setMinHeight(hboxlog.getMinHeight()*1.5);
+        AnchorPane.setTopAnchor(logs,AnchorPane.getTopAnchor(logs)*1.5);
+        TableColumn[] columns = {date,time,rating,weather,sport,steps,weight,height};
+        for(var column : columns){
+            column.setMinWidth(column.getPrefWidth()*2);
+        }
+        //end scaling
+        //start initializing
         tourlist.setItems(viewModel.getData());
         tourlist.setCellFactory(new Callback<ListView<Tour>, ListCell<Tour>>() {
             @Override

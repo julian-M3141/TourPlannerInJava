@@ -13,7 +13,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import tourplanner.businessLayer.FileHandler;
 import tourplanner.businessLayer.TourReport;
-import tourplanner.dataAccess.DataAccessObject;
+import tourplanner.dataAccess.DataAccessFactory;
 import tourplanner.gui.controller.FormController;
 import tourplanner.gui.controller.LogFormController;
 import tourplanner.models.Log;
@@ -35,7 +35,7 @@ public class MainViewModel {
     private final StringProperty distance = new SimpleStringProperty("");
     private final StringProperty description = new SimpleStringProperty("");
     private Tour selectedTour;
-    private final DataAccessObject dao = DataAccessObject.Instance();
+    private final DataAccessFactory dao = DataAccessFactory.Instance();
     private final FileHandler handler = new FileHandler();
     private final TourReport report = new TourReport();
 

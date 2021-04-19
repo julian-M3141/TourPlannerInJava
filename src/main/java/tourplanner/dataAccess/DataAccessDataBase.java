@@ -5,6 +5,7 @@ import tourplanner.models.Sport;
 import tourplanner.models.Tour;
 import tourplanner.models.Weather;
 
+import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -25,7 +26,14 @@ public class DataAccessDataBase implements DataAccess{
     }
 
     public DataAccessDataBase() throws SQLException {
-        openConnection("jdbc:postgresql://localhost:5432/postgres","tourplanner","geheimesTourPlannerPasswort");
+        try {
+            String url = ConfigurationManager.GetConfigPropertyValue("databaseUrl");
+            String user = ConfigurationManager.GetConfigPropertyValue("databaseUser");
+            String pwd = ConfigurationManager.GetConfigPropertyValue("databasePassword");
+            openConnection("jdbc:postgresql://localhost:5432/postgres", "tourplanner", "geheimesTourPlannerPasswort");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     @Override

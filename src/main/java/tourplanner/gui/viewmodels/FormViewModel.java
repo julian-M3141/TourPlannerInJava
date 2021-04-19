@@ -2,8 +2,8 @@ package tourplanner.gui.viewmodels;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import tourplanner.businessLayer.TourMap;
-import tourplanner.dataAccess.DataAccessObject;
+import tourplanner.businessLayer.tourMap.TourMap;
+import tourplanner.dataAccess.DataAccessFactory;
 import tourplanner.models.Tour;
 
 import java.util.HashMap;
@@ -15,7 +15,7 @@ public class FormViewModel {
     private final StringProperty distance = new SimpleStringProperty("");
     private final StringProperty description = new SimpleStringProperty("");
 
-    private final DataAccessObject dao = DataAccessObject.Instance();
+    private final DataAccessFactory dao = DataAccessFactory.Instance();
     private final TourMap map = new TourMap();
 
 

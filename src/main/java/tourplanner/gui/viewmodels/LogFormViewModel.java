@@ -6,7 +6,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import tourplanner.dataAccess.DataAccessObject;
+import tourplanner.dataAccess.DataAccessFactory;
 import tourplanner.models.Log;
 import tourplanner.models.Sport;
 import tourplanner.models.Tour;
@@ -33,7 +33,7 @@ public class LogFormViewModel {
     private final StringProperty sport = new SimpleStringProperty("");
     private final StringProperty weather = new SimpleStringProperty("");
     private final StringProperty steps = new SimpleStringProperty("");
-    private final DataAccessObject dao = DataAccessObject.Instance();
+    private final DataAccessFactory dao = DataAccessFactory.Instance();
 
     private final ObservableList<String> ratinglist = FXCollections.observableList(Arrays.asList("*","**","***","****","*****"));
     private final ObservableList<String> weatherlist = FXCollections.observableList(Arrays.asList("Sunny","Rain","Cloudy","Foggy","Snowfall"));

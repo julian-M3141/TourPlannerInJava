@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 
-public class DataAccessObject {
+public class DataAccessFactory {
     DataAccess dataAccess;
 
     //constructor
     //decide which implementation used
-    private DataAccessObject(){
+    private DataAccessFactory(){
         if (true) {
             try {
                 dataAccess = new DataAccessDataBase();
@@ -28,10 +28,10 @@ public class DataAccessObject {
 
 
     //Singleton
-    private static DataAccessObject _dao = null;
-    public static DataAccessObject Instance(){
+    private static DataAccessFactory _dao = null;
+    public static DataAccessFactory Instance(){
         if (_dao == null){
-            _dao = new DataAccessObject();
+            _dao = new DataAccessFactory();
         }
         return _dao;
     }

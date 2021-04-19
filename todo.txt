@@ -1,9 +1,15 @@
 ToDo - Liste
 
 * Config File and Config Class
-
+URL url = Main(oder andere class).class.getResource(url with leading /)
+InputStream stream = Main.class.getClassLoader().getResourceAsStream(ur without leading /)
 
 * Logs aktualisieren nach update
+* data access optimieren (interface verkleinern)
+* business layer factory erstellen mit dao, search ins business layer verschieben
+* mainviewmodel updaten
+* resources nach resources verschieben
+
 * nach delete selected tour updaten
 * Businesslayer Klasse als Manager erstellen oder im MVM?
 * Summarize Report
@@ -13,6 +19,8 @@ ToDo - Liste
 * Kommentare!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 * Klasse zur Berechnung von Pace,Geschwindigkeit, Kalorien
 * Moduls statt packages
+* dependency injection / spring boot
+
 
 
 Kleinere ToDos:
@@ -20,6 +28,7 @@ Kleinere ToDos:
 * Suche abbrechen button
 * Fenster auf Größe bearbeiten
 * Menuitem delete tour funktioniert nicht
+* distance aus request holen
 * alert je nach situation
 * nach delete tour auswählen
 * bei tourmap auf flscshe eingaben überprüfen
@@ -70,6 +79,22 @@ create table if not exists logs(
             REFERENCES Tour(TourID)
                 ON DELETE CASCADE
 );
+
+
+send request to website
+specify routetype = pedestrian/bicycle
+catch response
+validate response
+get distance
+send new request with new paramters
+returns image
+create new unique filename
+save image
+return filename
+
+MapQuestHandler
+  .createRouteRequest(from,to), returns BoundingBox (lr,ul,distance)
+  .createStaticMap, returns Image
 
 
 

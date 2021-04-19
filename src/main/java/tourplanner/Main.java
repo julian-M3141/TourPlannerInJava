@@ -12,9 +12,9 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/views/MainWindow.fxml"));
         primaryStage.setTitle("TourPlanner");
-        primaryStage.setScene(new Scene(root, 600, 550));
-        primaryStage.setMinWidth(600);
-        primaryStage.setMinHeight(550);
+        primaryStage.setScene(new Scene(root, 1200, 1100));
+        primaryStage.setMinWidth(1200);
+        primaryStage.setMinHeight(1100);
         primaryStage.show();
     }
 
