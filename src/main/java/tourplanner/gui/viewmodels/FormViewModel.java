@@ -2,6 +2,8 @@ package tourplanner.gui.viewmodels;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import tourplanner.businessLayer.manager.AppManagerFactory;
+import tourplanner.businessLayer.manager.IAppManger;
 import tourplanner.businessLayer.tourMap.TourMap;
 import tourplanner.dataAccess.DataAccessFactory;
 import tourplanner.models.Tour;
@@ -15,8 +17,9 @@ public class FormViewModel {
     private final StringProperty distance = new SimpleStringProperty("");
     private final StringProperty description = new SimpleStringProperty("");
 
-    private final DataAccessFactory dao = DataAccessFactory.Instance();
-    private final TourMap map = new TourMap();
+    //private final DataAccessFactory dao = DataAccessFactory.Instance();
+    private final IAppManger manager = AppManagerFactory.getManager();
+    //private final TourMap map = new TourMap();
 
 
     public void saveData() {
@@ -27,9 +30,9 @@ public class FormViewModel {
                 .setDistance(Integer.parseInt(distance.get()))
                 .setStart(from.get())
                 .setFinish(to.get())
-                .setImage(map.getImage(from.get(),to.get()))
+                //.setImage(map.getImage(from.get(),to.get()))
                 .build();
-        dao.saveTour(t);
+        manager.save(t);
     }
 
     public void updateTour(Tour tour){
@@ -41,7 +44,7 @@ public class FormViewModel {
         params.put("Von",getFrom());
         params.put("Bis",getTo());
         params.put("Beschreibung",getDescription());
-        dao.updateTour(tour,params); //improve update method later
+        manager.update(tour,params); //improve update method later
     }
 
     public String getDescription() {

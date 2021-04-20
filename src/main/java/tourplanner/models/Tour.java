@@ -83,7 +83,7 @@ public class Tour {
         }
 
         public Tour build(){
-            if(name == null || description == null || start == null || finish == null || image == null || distance < 0){
+            if(name == null || description == null || start == null || finish == null || distance < 0){
                 throw new IllegalArgumentException("All instances have to be set!");
             }
             if(logs==null)

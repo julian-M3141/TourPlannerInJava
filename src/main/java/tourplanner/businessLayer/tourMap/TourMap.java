@@ -1,19 +1,11 @@
 package tourplanner.businessLayer.tourMap;
 
-import org.json.JSONObject;
-import tourplanner.dataAccess.ConfigurationManager;
-import tourplanner.models.BoundingBox;
+
+import javafx.util.Pair;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.Random;
 
 public class TourMap {
     public String getImage(String start, String finish) {
@@ -32,6 +24,7 @@ public class TourMap {
             return "";
         }
         return filename;
+        //return Pair<String,Double>(filename,distance);
     }
 
 

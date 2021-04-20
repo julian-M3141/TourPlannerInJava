@@ -5,7 +5,6 @@ import java.util.Map;
 
 public class BoundingBox {
     private Map<String,Double> lr;
-
     private Map<String,Double> ul;
     private double distance;
 

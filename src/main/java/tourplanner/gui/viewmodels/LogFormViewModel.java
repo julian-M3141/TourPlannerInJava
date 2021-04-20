@@ -6,7 +6,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import tourplanner.dataAccess.DataAccessFactory;
+import tourplanner.businessLayer.manager.AppManagerFactory;
+import tourplanner.businessLayer.manager.IAppManger;
 import tourplanner.models.Log;
 import tourplanner.models.Sport;
 import tourplanner.models.Tour;
@@ -33,7 +34,8 @@ public class LogFormViewModel {
     private final StringProperty sport = new SimpleStringProperty("");
     private final StringProperty weather = new SimpleStringProperty("");
     private final StringProperty steps = new SimpleStringProperty("");
-    private final DataAccessFactory dao = DataAccessFactory.Instance();
+    //private final DataAccessFactory dao = DataAccessFactory.Instance();
+    private final IAppManger manager = AppManagerFactory.getManager();
 
     private final ObservableList<String> ratinglist = FXCollections.observableList(Arrays.asList("*","**","***","****","*****"));
     private final ObservableList<String> weatherlist = FXCollections.observableList(Arrays.asList("Sunny","Rain","Cloudy","Foggy","Snowfall"));
@@ -47,7 +49,7 @@ public class LogFormViewModel {
     }
 
     public void saveData(){
-        dao.save(editedTour,new Log.Builder()
+        manager.save(editedTour,new Log.Builder()
                 //edit localtime later
                 .setTime(LocalDateTime.of(getDate(), LocalTime.of(Integer.parseInt(getHours()),Integer.parseInt(getMinutes()))))
                 .setTimeinminutes(Integer.parseInt(getTime()))
@@ -74,7 +76,7 @@ public class LogFormViewModel {
         params.put("Sport",getSport());
         params.put("Steps",getSteps());
         if(log != null){
-            dao.update(log,params);
+            manager.update(log,params);
         }
     }
 

@@ -9,7 +9,22 @@ import java.util.HashMap;
 import java.util.Optional;
 
 public class DataAccessFactory {
-    DataAccess dataAccess;
+    private static DataAccess dataAccess;
+    public static DataAccess getDataAccess(){
+        if (dataAccess == null) {
+            if (true) {
+                try {
+                    dataAccess = new DataAccessDataBase();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                    dataAccess = new TourDBMock();
+                }
+            }else{
+                dataAccess = new TourDBMock();
+            }
+        }
+        return dataAccess;
+    }
 
     //constructor
     //decide which implementation used

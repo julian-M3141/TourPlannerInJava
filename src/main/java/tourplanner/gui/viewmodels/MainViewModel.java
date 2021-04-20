@@ -13,7 +13,8 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import tourplanner.businessLayer.FileHandler;
 import tourplanner.businessLayer.TourReport;
-import tourplanner.dataAccess.DataAccessFactory;
+import tourplanner.businessLayer.manager.AppManagerFactory;
+import tourplanner.businessLayer.manager.IAppManger;
 import tourplanner.gui.controller.FormController;
 import tourplanner.gui.controller.LogFormController;
 import tourplanner.models.Log;
@@ -35,11 +36,12 @@ public class MainViewModel {
     private final StringProperty distance = new SimpleStringProperty("");
     private final StringProperty description = new SimpleStringProperty("");
     private Tour selectedTour;
-    private final DataAccessFactory dao = DataAccessFactory.Instance();
+    //private final DataAccessFactory dao = DataAccessFactory.Instance();
+    private final IAppManger manager = AppManagerFactory.getManager();
     private final FileHandler handler = new FileHandler();
     private final TourReport report = new TourReport();
 
-    private final ObservableList<Tour> data = FXCollections.observableArrayList(dao.getAllTours());
+    private final ObservableList<Tour> data = FXCollections.observableArrayList(manager.getAll());
 
     private final ObservableList<Log> logs = FXCollections.observableArrayList();
 
@@ -89,7 +91,7 @@ public class MainViewModel {
     }
     public void search(){
         data.clear();
-        data.addAll(dao.search(search.get()));
+        data.addAll(manager.search(search.get()));
         System.out.println("search...");
     }
 
@@ -127,7 +129,7 @@ public class MainViewModel {
     }
 
     public void deleteLog(Object log) {
-        dao.delete(selectedTour,(Log)log );
+        manager.delete(selectedTour,(Log)log );
         setLogs();
         System.out.println("delete Log");
     }
@@ -149,23 +151,23 @@ public class MainViewModel {
     }
     public void importFile(String filename) {
         try {
-            dao.saveTour(handler.importTour(filename));
+            manager.save(handler.importTour(filename));
             refresh();
-            select(dao.getLast());
+            select(manager.getLast());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
     public void deleteTour(Object tour) {
-        dao.deleteTour((Tour) tour);
+        manager.delete((Tour) tour);
         refresh();
     }
 
     public void refresh(){
         data.clear();
-        data.addAll(dao.getAllTours());
-        Optional<Tour> t = dao.getTour(selectedTour.getId());
+        data.addAll(manager.getAll());
+        Optional<Tour> t = manager.get(selectedTour.getId());
         t.ifPresent(this::select);
     }
 
@@ -180,7 +182,7 @@ public class MainViewModel {
             System.out.println("new window");
             stage.setOnHiding(e ->{
                 refresh();
-                select(dao.getLast());
+                select(manager.getLast());
             });
         }catch (IOException e){
             e.printStackTrace();
