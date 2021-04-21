@@ -1,5 +1,8 @@
 package tourplanner.dataAccess.db;
 
+import javafx.util.Pair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import tourplanner.dataAccess.dao.ILogDataAccess;
 import tourplanner.models.Log;
 import tourplanner.models.Sport;
@@ -19,7 +22,10 @@ import java.util.Map;
 
 public class LogDBAccess implements ILogDataAccess {
     private static LogDBAccess _instance;
-    private LogDBAccess(){}
+    private Logger logger;
+    private LogDBAccess(){
+        logger = LogManager.getLogger(LogDBAccess.class);
+    }
     public static LogDBAccess getInstance(){
         if(_instance == null){
             _instance = new LogDBAccess();
@@ -40,49 +46,36 @@ public class LogDBAccess implements ILogDataAccess {
             state.deleteCharAt(state.length()-2);
             state.append(" where logid = ?;");
             PreparedStatement statement = DBConnection.getConnection().prepareStatement(state.toString());
-            int index = 1;
+            //int index = 1;
+            var wrapper = new Object(){int index = 1;};
+            Pair[] param = {new Pair<>("Rating",int.class),new Pair<>("Zeit",int.class)
+                    ,new Pair<>("Distanz",int.class),new Pair<>("Weather",String.class)
+                    ,new Pair<>("Weight",int.class),new Pair<>("Height",int.class)
+                    ,new Pair<>("Sport",String.class),new Pair<>("Steps",int.class)};
             if(params.get("Datum")!=null){
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm");
-                statement.setTimestamp(index, Timestamp.valueOf(LocalDateTime.parse(params.get("Datum"), formatter)));
-                index++;
+                statement.setTimestamp(wrapper.index, Timestamp.valueOf(LocalDateTime.parse(params.get("Datum"), formatter)));
+                wrapper.index++;
             }
-            if(params.get("Rating")!=null){
-                statement.setInt(index,Integer.parseInt(params.get("Rating")));
-                index++;
-            }
-            if(params.get("Zeit")!=null){
-                statement.setInt(index,Integer.parseInt(params.get("Zeit")));
-                index++;
-            }
-            if(params.get("Distanz")!=null){
-                statement.setInt(index,Integer.parseInt(params.get("Distanz")));
-                index++;
-            }
-            if(params.get("Weather")!=null){
-                statement.setString(index,params.get("Weather"));
-                index++;
-            }
-            if(params.get("Weight")!=null){
-                statement.setInt(index,Integer.parseInt(params.get("Weight")));
-                index++;
-            }
-            if(params.get("Height")!=null){
-                statement.setInt(index,Integer.parseInt(params.get("Height")));
-                index++;
-            }
-            if(params.get("Sport")!=null){
-                statement.setString(index,params.get("Sport"));
-                index++;
-            }
-            if(params.get("Steps")!=null){
-                statement.setInt(index,Integer.parseInt(params.get("Steps")));
-                index++;
-            }
-            statement.setInt(index,log.getId());
+            Arrays.asList(param).forEach(x -> {
+                if(params.get(x.getKey()) != null){
+                    try {
+                        if (x.getValue() == String.class) {
+                            statement.setString(wrapper.index, params.get(x.getKey()));
+                        }else if(x.getValue() == int.class){
+                            statement.setInt(wrapper.index, Integer.parseInt(params.get(x.getKey())));
+                        }
+                        wrapper.index++;
+                    }catch (SQLException s){
+                        logger.error(s);
+                    }
+                }
+            });
+            statement.setInt(wrapper.index,log.getId());
             statement.execute();
             //select all corresponding logs
         } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
+            logger.error(throwables);
         }
     }
 
@@ -105,7 +98,7 @@ public class LogDBAccess implements ILogDataAccess {
             statement.execute();
             //select all corresponding logs
         } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
+            logger.error(throwables);
         }
     }
 
@@ -118,7 +111,7 @@ public class LogDBAccess implements ILogDataAccess {
             statement.execute();
             //select all corresponding logs
         } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
+            logger.error(throwables);
         }
     }
 
@@ -147,7 +140,7 @@ public class LogDBAccess implements ILogDataAccess {
             //select all corresponding logs
             return list;
         } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
+            logger.error(throwables);
         }
         return list;
     }

@@ -29,7 +29,7 @@ public class MapQuestHandler {
                 .build();
         return new Pair<>(client,request);
     }
-    public BoundingBox createRouteRequest(String from, String to) throws IOException, InterruptedException {
+    public BoundingBox createRouteRequest(String from, String to) throws IOException, InterruptedException, IllegalArgumentException {
         //get mapquest key from config file
         key = ConfigurationManager.GetConfigPropertyValue("MapQuestKey");
         //build uri
@@ -37,6 +37,9 @@ public class MapQuestHandler {
         //send request
         HttpResponse<String> response = http.getKey().send(http.getValue(), HttpResponse.BodyHandlers.ofString());
         System.out.println(response.body());
+        if(new JSONObject(response.body()).getJSONObject("info").getInt("statuscode")!= 0){
+            throw new IllegalArgumentException("cannot find route");
+        }
         //transform into json object
         JSONObject route = new JSONObject(response.body()).getJSONObject("route");
         JSONObject boundingBox = route.getJSONObject("boundingBox");

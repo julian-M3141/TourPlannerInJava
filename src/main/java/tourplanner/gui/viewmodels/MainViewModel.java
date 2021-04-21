@@ -11,6 +11,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import tourplanner.businessLayer.ImportExportTour;
 import tourplanner.businessLayer.TourReport;
 import tourplanner.businessLayer.manager.AppManagerFactory;
@@ -40,6 +42,8 @@ public class MainViewModel {
     private final ImportExportTour handler = new ImportExportTour();
     private final TourReport report = new TourReport();
 
+    private Logger logger;
+
     private final ObservableList<Tour> data = FXCollections.observableArrayList(manager.getAll());
 
     private final ObservableList<Log> logs = FXCollections.observableArrayList();
@@ -50,7 +54,7 @@ public class MainViewModel {
         selectedTour = data.get(0);
         setTourData();
         setLogs();
-
+        logger = LogManager.getLogger(MainViewModel.class);
     }
 
     private void setTourData(){
@@ -62,7 +66,13 @@ public class MainViewModel {
         try {
             image.set(new Image(new FileInputStream("pics/"+selectedTour.getImage())));
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            logger.error("No image available for tour '"+tourname.get() +"', set default image");
+            try {
+                image.set(new Image(Objects.requireNonNull(MainViewModel.class.getClassLoader().getResourceAsStream("pics/test.jpeg"))));
+            }catch (NullPointerException n){
+                logger.error("Cannot find default image");
+            }
         }
     }
 

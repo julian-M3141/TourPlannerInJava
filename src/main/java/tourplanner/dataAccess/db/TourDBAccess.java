@@ -1,5 +1,8 @@
 package tourplanner.dataAccess.db;
 
+import javafx.util.Pair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import tourplanner.dataAccess.dao.ITourDataAccess;
 import tourplanner.models.Tour;
 
@@ -14,7 +17,11 @@ import java.util.Optional;
 
 public class TourDBAccess implements ITourDataAccess {
     private static TourDBAccess _instance;
-    private TourDBAccess(){}
+    private Logger logger;
+
+    private TourDBAccess(){
+        logger = LogManager.getLogger(TourDBAccess.class);
+    }
     public static TourDBAccess getInstance(){
         if(_instance == null){
             _instance = new TourDBAccess();
@@ -35,7 +42,7 @@ public class TourDBAccess implements ITourDataAccess {
             //select all corresponding logs
             return list;
         } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
+            logger.error(throwables);
         }
         return null;
     }
@@ -52,7 +59,7 @@ public class TourDBAccess implements ITourDataAccess {
             }
             //select all corresponding logs
         } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
+            logger.error(throwables);
         }
         return Optional.empty();
     }
@@ -68,7 +75,7 @@ public class TourDBAccess implements ITourDataAccess {
             }
             //select all corresponding logs
         } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
+            logger.error(throwables);
         }
         return null;
     }
@@ -87,36 +94,29 @@ public class TourDBAccess implements ITourDataAccess {
             state.deleteCharAt(state.length()-2);
             state.append(" where tourid = ?;");
             PreparedStatement statement = DBConnection.getConnection().prepareStatement(state.toString());
-            int index = 1;
-            if(params.get("Tourname")!=null){
-                statement.setString(index,params.get("Tourname"));
-                index++;
-            }
-            if(params.get("Beschreibung")!=null){
-                statement.setString(index,params.get("Beschreibung"));
-                index++;
-            }
-            if(params.get("Von")!=null){
-                statement.setString(index,params.get("Von"));
-                index++;
-            }
-            if(params.get("Bis")!=null){
-                statement.setString(index,params.get("Bis"));
-                index++;
-            }
-            if(params.get("Distanz")!=null){
-                statement.setInt(index,Integer.parseInt(params.get("Distanz")));
-                index++;
-            }
-            if(params.get("Bild")!=null){
-                statement.setString(index,params.get("Bild"));
-                index++;
-            }
-            statement.setInt(index,tour.getId());
+            Pair[] param = {new Pair<>("Tourname",String.class),new Pair<>("Beschreibung",String.class)
+                    ,new Pair<>("Von",String.class),new Pair<>("Bis",String.class)
+                    ,new Pair<>("Distanz",int.class),new Pair<>("Bild",String.class)};
+            var wrapper = new Object(){ int index = 1; };
+            Arrays.asList(param).forEach(x ->{
+                if(params.get(x.getKey())!=null){
+                    try {
+                        if(x.getValue() == String.class) {
+                            statement.setString(wrapper.index, params.get(x.getKey()));
+                        }else if(x.getValue() == int.class){
+                            statement.setInt(wrapper.index,Integer.parseInt(params.get(x.getKey())));
+                        }
+                        wrapper.index++;
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+            });
+            statement.setInt(wrapper.index,tour.getId());
             statement.execute();
             //select all corresponding logs
         } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
+            logger.error(throwables);
         }
     }
 
@@ -135,7 +135,7 @@ public class TourDBAccess implements ITourDataAccess {
             statement.execute();
             //select all corresponding logs
         } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
+            logger.error(throwables);
         }
     }
 
@@ -148,7 +148,7 @@ public class TourDBAccess implements ITourDataAccess {
             statement.execute();
             //select all corresponding logs
         } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
+            logger.error(throwables);
         }
     }
 
@@ -167,7 +167,7 @@ public class TourDBAccess implements ITourDataAccess {
             //select all corresponding logs
             return list;
         } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
+            logger.error(throwables);
         }
         return null;
     }

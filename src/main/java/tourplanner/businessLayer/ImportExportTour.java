@@ -1,5 +1,7 @@
 package tourplanner.businessLayer;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import tourplanner.dataAccess.FileHandler;
@@ -15,14 +17,21 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class ImportExportTour {
+    private Logger logger;
+    public ImportExportTour(){
+        logger = LogManager.getLogger(ImportExportTour.class);
+    }
     public Tour importTour(String filename) throws FileNotFoundException {
         String content = FileHandler.read("",filename);
-        return toTour(new JSONObject(content));
+        Tour tour = toTour(new JSONObject(content));
+        logger.info("Import Tour '"+tour.getName()+"'");
+        return tour;
     }
 
 
     public void export(Tour tour, String filename) throws IOException {
         //do some coding here...
+        logger.info("Export Tour '"+tour.getName()+"'");
         FileHandler.saveNewFile("",filename,tour.toJSON().toString());
     }
 

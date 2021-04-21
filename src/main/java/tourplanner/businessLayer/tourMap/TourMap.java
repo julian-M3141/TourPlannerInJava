@@ -2,6 +2,9 @@ package tourplanner.businessLayer.tourMap;
 
 
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +22,11 @@ public class TourMap implements ITourMap{
             filename = FileNameGenerator.getUniqueFilename("jpg","pics/");
             ImageIO.write(image, "jpg", new File("pics/"+filename) );
             System.out.println("image created");
-        } catch (IOException | InterruptedException e) {
+        } catch (IllegalArgumentException e){
+            Logger logger = LogManager.getLogger(TourMap.class);
+            logger.error(e);
+            return "";
+        }catch (IOException | InterruptedException e) {
             e.printStackTrace();
             return "";
         }

@@ -19,7 +19,7 @@ import java.util.Optional;
 import org.apache.logging.log4j.Logger;
 
 public class AppManager implements IAppManger {
-    Status status;
+    private Status status;
     private final ITourDataAccess tourAccess;
     private final ILogDataAccess logAccess;
     private Logger logger;
@@ -55,7 +55,12 @@ public class AppManager implements IAppManger {
         if((!(tour.getStart().equals(start)))||(!(tour.getFinish().equals(finish)))){
             System.out.println("Update image");
             String filename = tour.getImage();
-            params.put("Bild",new TourMap().getImage(start,finish));
+            String newImage = new TourMap().getImage(start, finish);
+            if(!newImage.isEmpty()) {
+                params.put("Bild", newImage);
+            }else{
+                logger.error("Route cannot be found");
+            }
             try {
                 FileHandler.delete("pics/",filename);
             } catch (IOException e) {

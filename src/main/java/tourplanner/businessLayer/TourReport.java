@@ -49,7 +49,7 @@ public class TourReport {
 
         //draw image
         //later tour.getImage
-        PDImageXObject image = PDImageXObject.createFromFile("test.jpg",document);
+        PDImageXObject image = PDImageXObject.createFromFile("pics/"+tour.getImage(),document);
         stream.drawImage(image,25,400,450,300);
 
         stream.beginText();
