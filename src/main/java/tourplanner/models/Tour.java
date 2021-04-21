@@ -1,5 +1,8 @@
 package tourplanner.models;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class Tour {
@@ -147,6 +150,22 @@ public class Tour {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public JSONObject toJSON(){
+        JSONObject obj = new JSONObject();
+        obj.put("tourname",getName());
+        obj.put("distance",getDistance());
+        obj.put("start",getStart());
+        obj.put("finish",getFinish());
+        obj.put("description",getDescription());
+        obj.put("image",getImage());
+        JSONArray logs = new JSONArray();
+        for(Log log : getLogs()){
+            logs.put(log.toJSON());
+        }
+        obj.put("logs",logs);
+        return obj;
     }
 
 }

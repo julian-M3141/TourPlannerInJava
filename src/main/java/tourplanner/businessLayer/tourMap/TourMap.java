@@ -1,13 +1,13 @@
 package tourplanner.businessLayer.tourMap;
 
 
-import javafx.util.Pair;
 
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 
-public class TourMap {
+public class TourMap implements ITourMap{
+    @Override
     public String getImage(String start, String finish) {
         MapQuestHandler handler = new MapQuestHandler();
         Double distance = null;

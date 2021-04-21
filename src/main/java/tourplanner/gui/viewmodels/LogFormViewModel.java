@@ -34,7 +34,6 @@ public class LogFormViewModel {
     private final StringProperty sport = new SimpleStringProperty("");
     private final StringProperty weather = new SimpleStringProperty("");
     private final StringProperty steps = new SimpleStringProperty("");
-    //private final DataAccessFactory dao = DataAccessFactory.Instance();
     private final IAppManger manager = AppManagerFactory.getManager();
 
     private final ObservableList<String> ratinglist = FXCollections.observableList(Arrays.asList("*","**","***","****","*****"));

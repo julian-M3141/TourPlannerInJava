@@ -4,8 +4,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import tourplanner.businessLayer.manager.AppManagerFactory;
 import tourplanner.businessLayer.manager.IAppManger;
-import tourplanner.businessLayer.tourMap.TourMap;
-import tourplanner.dataAccess.DataAccessFactory;
 import tourplanner.models.Tour;
 
 import java.util.HashMap;
@@ -17,7 +15,6 @@ public class FormViewModel {
     private final StringProperty distance = new SimpleStringProperty("");
     private final StringProperty description = new SimpleStringProperty("");
 
-    //private final DataAccessFactory dao = DataAccessFactory.Instance();
     private final IAppManger manager = AppManagerFactory.getManager();
     //private final TourMap map = new TourMap();
 

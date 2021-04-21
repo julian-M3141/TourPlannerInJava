@@ -2,72 +2,28 @@ package tourplanner.businessLayer;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import tourplanner.dataAccess.FileHandler;
 import tourplanner.models.Log;
 import tourplanner.models.Sport;
 import tourplanner.models.Tour;
 import tourplanner.models.Weather;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Scanner;
 
-public class FileHandler {
+public class ImportExportTour {
     public Tour importTour(String filename) throws FileNotFoundException {
-        File myObj = new File(filename);
-        Scanner myReader = null;
-        myReader = new Scanner(myObj);
-        StringBuilder sb = new StringBuilder();
-        while (myReader.hasNextLine()) {
-            sb.append(myReader.nextLine());
-        }
-        return toTour(new JSONObject(sb.toString()));
+        String content = FileHandler.read("",filename);
+        return toTour(new JSONObject(content));
     }
 
 
     public void export(Tour tour, String filename) throws IOException {
         //do some coding here...
-        File newFile = new File(filename);
-        //throws IOException if file already exists
-        if(newFile.createNewFile()){
-            FileWriter writer = new FileWriter(filename);
-            writer.write(toJSON(tour).toString());
-            writer.close();
-        }
-    }
-    private JSONObject toJSON(Tour tour){
-        JSONObject obj = new JSONObject();
-        obj.put("tourname",tour.getName());
-        obj.put("distance",tour.getDistance());
-        obj.put("start",tour.getStart());
-        obj.put("finish",tour.getFinish());
-        obj.put("description",tour.getDescription());
-        obj.put("image",tour.getImage());
-        JSONArray logs = new JSONArray();
-        for(Log log : tour.getLogs()){
-            logs.put(toJSON(log));
-        }
-        obj.put("logs",logs);
-        return obj;
-    }
-
-    private JSONObject toJSON(Log log) {
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm");
-        JSONObject obj = new JSONObject();
-        obj.put("date",log.getTime().format(format));
-        obj.put("time",log.getTimeinminutes());
-        obj.put("rating",log.getRating());
-        obj.put("distance",log.getDistance());
-        obj.put("weather",log.getWeather().toString());
-        obj.put("weight",log.getWeight());
-        obj.put("height",log.getHeight());
-        obj.put("sport",log.getSport().toString());
-        obj.put("steps",log.getSteps());
-        return obj;
+        FileHandler.saveNewFile("",filename,tour.toJSON().toString());
     }
 
     private Tour toTour(JSONObject obj){

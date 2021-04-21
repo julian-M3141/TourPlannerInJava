@@ -11,7 +11,6 @@ InputStream stream = Main.class.getClassLoader().getResourceAsStream(ur without 
 * resources nach resources verschieben
 
 * nach delete selected tour updaten
-* Businesslayer Klasse als Manager erstellen oder im MVM?
 * Summarize Report
 * Config File
 * teils deutsch/teils englisch
@@ -38,7 +37,7 @@ Kleinere ToDos:
 Fragen:
 * Für Formular ein eigenes Fenster?
 * Textsuche in der DB?
-
+* Businesslayer Klasse als Manager erstellen oder im MVM?
 
 #DataBase
 #src: https://medium.com/coding-blocks/creating-user-database-and-adding-access-on-postgresql-8bfcd2f4a91e

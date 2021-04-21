@@ -11,7 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import tourplanner.businessLayer.FileHandler;
+import tourplanner.businessLayer.ImportExportTour;
 import tourplanner.businessLayer.TourReport;
 import tourplanner.businessLayer.manager.AppManagerFactory;
 import tourplanner.businessLayer.manager.IAppManger;
@@ -36,9 +36,8 @@ public class MainViewModel {
     private final StringProperty distance = new SimpleStringProperty("");
     private final StringProperty description = new SimpleStringProperty("");
     private Tour selectedTour;
-    //private final DataAccessFactory dao = DataAccessFactory.Instance();
     private final IAppManger manager = AppManagerFactory.getManager();
-    private final FileHandler handler = new FileHandler();
+    private final ImportExportTour handler = new ImportExportTour();
     private final TourReport report = new TourReport();
 
     private final ObservableList<Tour> data = FXCollections.observableArrayList(manager.getAll());

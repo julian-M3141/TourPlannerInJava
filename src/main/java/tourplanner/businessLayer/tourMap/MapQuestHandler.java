@@ -1,6 +1,5 @@
 package tourplanner.businessLayer.tourMap;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.util.Pair;
 import org.json.JSONObject;
 import tourplanner.dataAccess.ConfigurationManager;
@@ -9,14 +8,12 @@ import tourplanner.models.BoundingBox;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.AbstractMap;
-import java.util.HashMap;
 import java.util.Map;
 
 public class MapQuestHandler {
@@ -75,7 +72,7 @@ public class MapQuestHandler {
         HttpResponse<byte[]> imageresponse = http.getKey().send(http.getValue(), HttpResponse.BodyHandlers.ofByteArray());
         byte[] imgInBytes = imageresponse.body();
         ByteArrayInputStream bis = new ByteArrayInputStream(imgInBytes);
-        BufferedImage bImage2 = ImageIO.read(bis);
-        return bImage2;
+        return ImageIO.read(bis);
+        //return bImage2;
     }
 }

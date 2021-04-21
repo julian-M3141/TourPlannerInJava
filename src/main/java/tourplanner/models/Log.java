@@ -1,10 +1,9 @@
 package tourplanner.models;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import org.json.JSONObject;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Log {
     //private member variables
@@ -185,5 +184,20 @@ public class Log {
 
     public void setSteps(int steps) {
         this.steps = steps;
+    }
+
+    public JSONObject toJSON() {
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm");
+        JSONObject obj = new JSONObject();
+        obj.put("date",getTime().format(format));
+        obj.put("time",getTimeinminutes());
+        obj.put("rating",getRating());
+        obj.put("distance",getDistance());
+        obj.put("weather",getWeather().toString());
+        obj.put("weight",getWeight());
+        obj.put("height",getHeight());
+        obj.put("sport",getSport().toString());
+        obj.put("steps",getSteps());
+        return obj;
     }
 }

@@ -1,23 +1,27 @@
-package tourplanner.dataAccess;
+package tourplanner.dataAccess.mockedDB;
 
+import tourplanner.dataAccess.dao.ITourDataAccess;
 import tourplanner.models.Log;
 import tourplanner.models.Sport;
 import tourplanner.models.Tour;
 import tourplanner.models.Weather;
 
-import java.lang.reflect.InvocationTargetException;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
-public class TourDBMock implements DataAccess{
-    private ArrayList<Tour> tours = new ArrayList<Tour>();
-
-    public TourDBMock(){
+public class TourDAMock implements ITourDataAccess {
+    private final ArrayList<Tour> tours = new ArrayList<Tour>();
+    private static TourDAMock _instance;
+    public static TourDAMock Instance(){
+        if(_instance == null){
+            _instance = new TourDAMock();
+        }
+        return _instance;
+    }
+    private TourDAMock(){
         //create new tours
         tours.add(new Tour.Builder()
                 .setId(1)
@@ -28,29 +32,29 @@ public class TourDBMock implements DataAccess{
                 .setDistance(200)
                 .setImage("test.jpg")
                 .setLogs(new ArrayList<Log>(Arrays.asList(new Log.Builder()
-                        .setId(1)
-                        .setTime(LocalDateTime.now())
-                        .setRating(4)
-                        .setTimeinminutes(400)
-                        .setDistance(200)
-                        .setWeather(Weather.Sunny)
-                        .setWeight(80)
-                        .setHeight(180)
-                        .setSport(Sport.Bicycle)
-                        .setSteps(800000)
-                        .build(),
-                    new Log.Builder()
-                        .setId(2)
-                        .setTime(LocalDateTime.now())
-                        .setRating(5)
-                        .setTimeinminutes(300)
-                        .setDistance(201)
-                        .setWeather(Weather.Rain)
-                        .setWeight(88)
-                        .setHeight(182)
-                        .setSport(Sport.Running)
-                        .setSteps(800000)
-                        .build())))
+                                .setId(1)
+                                .setTime(LocalDateTime.now())
+                                .setRating(4)
+                                .setTimeinminutes(400)
+                                .setDistance(200)
+                                .setWeather(Weather.Sunny)
+                                .setWeight(80)
+                                .setHeight(180)
+                                .setSport(Sport.Bicycle)
+                                .setSteps(800000)
+                                .build(),
+                        new Log.Builder()
+                                .setId(2)
+                                .setTime(LocalDateTime.now())
+                                .setRating(5)
+                                .setTimeinminutes(300)
+                                .setDistance(201)
+                                .setWeather(Weather.Rain)
+                                .setWeight(88)
+                                .setHeight(182)
+                                .setSport(Sport.Running)
+                                .setSteps(800000)
+                                .build())))
                 .build());
         tours.add(new Tour.Builder()
                 .setId(2)
@@ -74,10 +78,6 @@ public class TourDBMock implements DataAccess{
                         .build())))
                 .build());
     }
-
-
-
-
     @Override
     public ArrayList<Tour> getAll() {
         return tours;
@@ -101,7 +101,7 @@ public class TourDBMock implements DataAccess{
     }
 
     @Override
-    public void update(Tour tour,HashMap<String,String> params) throws NumberFormatException {
+    public void update(Tour tour, Map<String, String> params) {
         if(params.get("Tourname")!=null){
             tour.setName(params.get("Tourname"));
         }
@@ -151,52 +151,5 @@ public class TourDBMock implements DataAccess{
             }
         }
         return tmp;
-    }
-
-    @Override
-    public void update(Log log, HashMap<String,String> params) {
-        if(params.get("Datum")!=null){
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm");
-            log.setTime(LocalDateTime.parse(params.get("Datum"), formatter));
-        }
-        if(params.get("Rating")!=null){
-            log.setRating(Integer.parseInt(params.get("Rating")));
-        }
-        if(params.get("Zeit")!=null){
-            log.setTimeinminutes(Integer.parseInt(params.get("Zeit")));
-        }
-        if(params.get("Distanz")!=null){
-            log.setDistance(Integer.parseInt(params.get("Distanz")));
-        }
-        if(params.get("Weather")!=null){
-            log.setWeather(Weather.valueOf(params.get("Weather")));
-        }
-        if(params.get("Weight")!=null){
-            log.setWeight(Integer.parseInt(params.get("Weight")));
-        }
-        if(params.get("Height")!=null){
-            log.setHeight(Integer.parseInt(params.get("Height")));
-        }
-        if(params.get("Sport")!=null){
-            log.setSport(Sport.valueOf(params.get("Sport")));
-        }
-        if(params.get("Steps")!=null){
-            log.setSteps(Integer.parseInt(params.get("Steps")));
-        }
-    }
-
-    @Override
-    public void save(Tour tour, Log log) {
-        try{
-            log.setId(tour.getLogs().get(tour.getLogs().size()-1).getId()+1);
-        }catch(IndexOutOfBoundsException e){
-            log.setId(1);
-        }
-        tour.getLogs().add(log);
-    }
-
-    @Override
-    public void delete(Tour tour, Log log) {
-        tour.getLogs().remove(log);
     }
 }
