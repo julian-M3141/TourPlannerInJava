@@ -1,4 +1,0 @@
-databaseUrl=jdbc:postgresql://localhost:5432/postgres
-databaseUser=tourplanner
-databasePassword=geheimesTourPlannerPasswort
-MapQuestKey=tNhqDcx3ftu1UbNAUQGFsGjTECeXQR4Q

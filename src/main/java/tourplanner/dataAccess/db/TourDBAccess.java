@@ -78,7 +78,7 @@ public class TourDBAccess implements ITourDataAccess {
         try {
             StringBuilder state = new StringBuilder("update tour set ");
             String[][] paramlist = {{"Tourname","name"},{"Beschreibung","description"},{"Von","start"}
-                                ,{"Bis","finish"},{"Distanz","distance"}};
+                                ,{"Bis","finish"},{"Distanz","distance"},{"Bild","image"}};
             Arrays.asList(paramlist).forEach(x -> {
                 if(params.get(x[0])!=null){
                     state.append(x[1] + " = ?, ");
@@ -106,6 +106,10 @@ public class TourDBAccess implements ITourDataAccess {
             }
             if(params.get("Distanz")!=null){
                 statement.setInt(index,Integer.parseInt(params.get("Distanz")));
+                index++;
+            }
+            if(params.get("Bild")!=null){
+                statement.setString(index,params.get("Bild"));
                 index++;
             }
             statement.setInt(index,tour.getId());

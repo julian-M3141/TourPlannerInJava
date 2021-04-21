@@ -95,6 +95,16 @@ MapQuestHandler
   .createRouteRequest(from,to), returns BoundingBox (lr,ul,distance)
   .createStaticMap, returns Image
 
-
+public Object create(Class<?> controllerClass) {
+if (controllerClass == MainWindowController.class) {
+return new MainWindowController(mainWindowViewModel);
+} else if (controllerClass == SearchBarController.class) {
+return new SearchBarController(searchBarViewModel);
+} else if (controllerClass == TourDetailsController.class) {
+return new TourDetailsController(tourDetailsViewModel);
+} else if (controllerClass == ToursOverviewController.class) {
+return new ToursOverviewController(toursOverviewViewModel);
+}
+throw new IllegalArgumentException("Unknown controller class: " + controllerClass); }
 
 
