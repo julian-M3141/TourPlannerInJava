@@ -45,7 +45,6 @@ public class ImportExportTour {
                 .setImage(obj.getString("image"))
                 .setLogs(logs)
                 .build();
-
     }
 
     private Log toLog(JSONObject o) {
