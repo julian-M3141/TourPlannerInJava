@@ -1,4 +1,4 @@
-package tourplanner.businessLayer;
+package tourplanner.businessLayer.report;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;

@@ -3,21 +3,21 @@ package tourplanner.gui.controller;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import javafx.event.ActionEvent;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import tourplanner.gui.viewmodels.MainViewModel;
 import tourplanner.models.Log;
+import tourplanner.models.Sport;
 import tourplanner.models.Tour;
+import tourplanner.models.Weather;
 
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -28,7 +28,7 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable {
     private final MainViewModel viewModel = new MainViewModel();
 
-    private DoubleProperty scale = new SimpleDoubleProperty(1);
+    private final DoubleProperty scale = new SimpleDoubleProperty(1);
     private final DoubleProperty fontsize = new SimpleDoubleProperty(20);
 
     //for scaling
@@ -42,21 +42,21 @@ public class MainController implements Initializable {
     public GridPane gridpanedata;
     //end
     public TextField searchbox;
-    public ListView tourlist;
+    public ListView<Tour> tourlist;
     public Label tourtitle;
     public Label finish;
     public Label start;
     public Label distance;
     public Label description;
-    public TableView logs;
-    public TableColumn date;
-    public TableColumn time;
-    public TableColumn rating;
-    public TableColumn weather;
-    public TableColumn sport;
-    public TableColumn steps;
-    public TableColumn height;
-    public TableColumn weight;
+    public TableView<Log> logs;
+    public TableColumn<Log,LocalDateTime> date;
+    public TableColumn<Log,Integer> time;
+    public TableColumn<Log,Integer> rating;
+    public TableColumn<Log, Weather> weather;
+    public TableColumn<Log, Sport> sport;
+    public TableColumn<Log,Integer> steps;
+    public TableColumn<Log,Integer> height;
+    public TableColumn<Log,Integer> weight;
     public ImageView image;
     public AnchorPane imagepane;
 
@@ -82,16 +82,16 @@ public class MainController implements Initializable {
         //end scaling
         //start initializing
         tourlist.setItems(viewModel.getData());
-        tourlist.setCellFactory(new Callback<ListView<Tour>, ListCell<Tour>>() {
+        tourlist.setCellFactory(new Callback<>() {
             @Override
-            public ListCell call(ListView listView) {
-                ListCell<Tour> cell = new ListCell<>(){
+            public ListCell<Tour> call(ListView listView) {
+                ListCell<Tour> cell = new ListCell<>() {
                     @Override
-                    protected void updateItem(Tour tour,boolean empty){
-                        super.updateItem(tour,empty);
-                        if(tour!=null && !empty){
+                    protected void updateItem(Tour tour, boolean empty) {
+                        super.updateItem(tour, empty);
+                        if (tour != null && !empty) {
                             setText(tour.getName());
-                        }else{
+                        } else {
                             setText(null);
                         }
                     }
@@ -99,12 +99,7 @@ public class MainController implements Initializable {
                 return cell;
             }
         });
-        tourlist.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                viewModel.select(tourlist.getSelectionModel().getSelectedItem());
-            }
-        });
+        tourlist.setOnMouseClicked(mouseEvent -> viewModel.select(tourlist.getSelectionModel().getSelectedItem()));
         Bindings.bindBidirectional(searchbox.textProperty(),viewModel.searchProperty());
         Bindings.bindBidirectional(tourtitle.textProperty(),viewModel.tournameProperty());
         Bindings.bindBidirectional(finish.textProperty(),viewModel.finishProperty());
@@ -143,7 +138,7 @@ public class MainController implements Initializable {
                     }
                     else {
                         //change format to hh:mm // now: hh:m bei min<10
-                        setText(item/60 + ":"+item%60);
+                        setText(String.format("%d:%02d",item/60,item%60));
                     }
                 }
             };
@@ -152,7 +147,8 @@ public class MainController implements Initializable {
         });
         time.setCellValueFactory(new PropertyValueFactory<>("timeinminutes"));
         rating.setCellFactory(column -> {
-            TableCell<Log, Integer> cell = new TableCell<Log,Integer>() {
+
+            return new TableCell<Log,Integer>() {
                 @Override
                 protected void updateItem(Integer item, boolean empty) {
                     super.updateItem(item, empty);
@@ -164,8 +160,6 @@ public class MainController implements Initializable {
                     }
                 }
             };
-
-            return cell;
         });
         rating.setCellValueFactory(new PropertyValueFactory<>("rating"));
         weather.setCellValueFactory(new PropertyValueFactory<>("weather"));
@@ -177,7 +171,6 @@ public class MainController implements Initializable {
     }
 
     public void search(ActionEvent actionEvent){ viewModel.search(); }
-    public void edit(ActionEvent actionEvent){ viewModel.edit(); }
     public void addLog(ActionEvent actionEvent){ viewModel.addLog();}
     public void deleteLog(ActionEvent actionEvent){ viewModel.deleteLog(logs.getSelectionModel().getSelectedItem());}
     public void updateLog(ActionEvent actionEvent){ viewModel.updateLog(logs.getSelectionModel().getSelectedItem());}
@@ -191,6 +184,7 @@ public class MainController implements Initializable {
         result.ifPresent(viewModel::importFile);
     }
     public void print(ActionEvent actionEvent){ viewModel.print();}
+    public void summarize(ActionEvent actionEvent){viewModel.summarizeReport();}
     public void deleteTour(ActionEvent actionEvent){ viewModel.deleteTour(tourlist.getSelectionModel().getSelectedItem());}
 
     //new tour

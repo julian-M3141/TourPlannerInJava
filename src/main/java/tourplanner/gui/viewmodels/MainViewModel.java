@@ -13,10 +13,11 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import tourplanner.businessLayer.report.BasicTourReport;
 import tourplanner.businessLayer.ImportExportTour;
-import tourplanner.businessLayer.TourReport;
 import tourplanner.businessLayer.manager.AppManagerFactory;
 import tourplanner.businessLayer.manager.IAppManger;
+import tourplanner.businessLayer.report.SummarizeReport;
 import tourplanner.gui.controller.FormController;
 import tourplanner.gui.controller.LogFormController;
 import tourplanner.models.Log;
@@ -40,9 +41,10 @@ public class MainViewModel {
     private Tour selectedTour;
     private final IAppManger manager = AppManagerFactory.getManager();
     private final ImportExportTour handler = new ImportExportTour();
-    private final TourReport report = new TourReport();
+    private final BasicTourReport report = new BasicTourReport();
+    private final SummarizeReport summarizeReport = new SummarizeReport();
 
-    private Logger logger;
+    private final Logger logger;
 
     private final ObservableList<Tour> data = FXCollections.observableArrayList(manager.getAll());
 
@@ -51,9 +53,11 @@ public class MainViewModel {
     //constructor
     public MainViewModel(){
         //set tour and data
-        selectedTour = data.get(0);
-        setTourData();
-        setLogs();
+        if(data.size()>0) {
+            selectedTour = data.get(0);
+            setTourData();
+            setLogs();
+        }
         logger = LogManager.getLogger(MainViewModel.class);
     }
 
@@ -71,7 +75,7 @@ public class MainViewModel {
             try {
                 image.set(new Image(Objects.requireNonNull(MainViewModel.class.getClassLoader().getResourceAsStream("pics/test.jpeg"))));
             }catch (NullPointerException n){
-                logger.error("Cannot find default image");
+                logger.fatal("Cannot find default image");
             }
         }
     }
@@ -101,11 +105,6 @@ public class MainViewModel {
     public void search(){
         data.clear();
         data.addAll(manager.search(search.get()));
-        System.out.println("search...");
-    }
-
-    public void edit(){
-        System.out.println("edit...");
     }
 
     public void select(Object selectedItem){
@@ -113,7 +112,6 @@ public class MainViewModel {
             selectedTour = (Tour) selectedItem;
             setTourData();
             setLogs();
-            System.out.println("clicked on " + ((Tour) selectedItem).getName());
         }
     }
 
@@ -140,7 +138,6 @@ public class MainViewModel {
     public void deleteLog(Object log) {
         manager.delete(selectedTour,(Log)log );
         setLogs();
-        System.out.println("delete Log");
     }
 
     public void print(){
@@ -235,7 +232,6 @@ public class MainViewModel {
         }catch (IOException e){
             e.printStackTrace();
         }
-        System.out.println("Add log");
     }
 
     public void updateLog(Object log) {
@@ -260,6 +256,13 @@ public class MainViewModel {
         }else {
             addLog();
         }
-        System.out.println("Update log");
+    }
+
+    public void summarizeReport() {
+        try {
+            summarizeReport.print(selectedTour);
+        } catch (FileNotFoundException e) {
+            logger.error(e);
+        }
     }
 }
