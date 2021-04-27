@@ -83,4 +83,12 @@ public class FormViewModel {
     public StringProperty tournameProperty() {
         return tourname;
     }
+
+//    public Boolean isValid() {
+//        StringProperty[] fields = {description,tourname,from,to,distance};
+//        for(var field : fields){
+//            if(field.get().isEmpty()) return false;
+//        }
+//        return true;
+//    }
 }

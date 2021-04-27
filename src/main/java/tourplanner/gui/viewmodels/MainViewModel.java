@@ -7,10 +7,10 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tourplanner.businessLayer.report.BasicTourReport;
@@ -51,7 +51,7 @@ public class MainViewModel {
     private final ObservableList<Log> logs = FXCollections.observableArrayList();
 
     //constructor
-    public MainViewModel(){
+    private MainViewModel(){
         //set tour and data
         if(data.size()>0) {
             selectedTour = data.get(0);
@@ -59,6 +59,13 @@ public class MainViewModel {
             setLogs();
         }
         logger = LogManager.getLogger(MainViewModel.class);
+    }
+    private static MainViewModel model;
+    public static MainViewModel Instance(){
+        if(model==null){
+            model = new MainViewModel();
+        }
+        return model;
     }
 
     private void setTourData(){
@@ -105,6 +112,7 @@ public class MainViewModel {
     public void search(){
         data.clear();
         data.addAll(manager.search(search.get()));
+        search.set("");
     }
 
     public void select(Object selectedItem){
@@ -137,6 +145,7 @@ public class MainViewModel {
 
     public void deleteLog(Object log) {
         manager.delete(selectedTour,(Log)log );
+        refresh();
         setLogs();
     }
 
@@ -165,8 +174,8 @@ public class MainViewModel {
         }
     }
 
-    public void deleteTour(Object tour) {
-        manager.delete((Tour) tour);
+    public void deleteTour() {
+        manager.delete(selectedTour);
         refresh();
     }
 
@@ -178,81 +187,20 @@ public class MainViewModel {
     }
 
     public void newTour(){
-        Parent root;
-        try{
-            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/views/tourForm.fxml")));
-            Stage stage = new Stage();
-            stage.setTitle("Neue Tour erstellen");
-            stage.setScene(new Scene(root,600,400));
-            stage.show();
-            System.out.println("new window");
-            stage.setOnHiding(e ->{
-                refresh();
-                select(manager.getLast());
-            });
-        }catch (IOException e){
-            e.printStackTrace();
-        }
+        createTourWindow("/views/tourForm.fxml","Tour erstellen",false);
     }
 
     public void updateTour(){
-        try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/tourForm.fxml"));
-            Stage stage = new Stage();
-            stage.setTitle("Tour bearbeiten");
-            stage.setScene(new Scene(loader.load(),600,400));
-
-            FormController controller = loader.getController();
-            controller.initData(selectedTour);
-
-            stage.show();
-            stage.setOnHiding(e ->{
-                refresh();
-                //select(selectedTour);
-            });
-        }catch (IOException e){
-            e.printStackTrace();
-        }
+        createTourWindow("/views/tourForm.fxml","Tour bearbeiten",true);
     }
 
     public void addLog() {
-        try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/logForm.fxml"));
-            Stage stage = new Stage();
-            stage.setTitle("Neue Logeintrag erstellen");
-            stage.setScene(new Scene(loader.load(),600,395));
-
-            LogFormController controller = loader.getController();
-            controller.initTour(selectedTour);
-            stage.show();
-            stage.setOnHiding(e -> {
-                refresh();
-                setLogs();
-            });
-        }catch (IOException e){
-            e.printStackTrace();
-        }
+        createLogWindow("/views/logForm.fxml","Neuen Logeintrag erstellen",Optional.empty());
     }
 
     public void updateLog(Object log) {
         if(log != null){
-            try{
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/logForm.fxml"));
-                Stage stage = new Stage();
-                stage.setTitle("Neue Logeintrag erstellen");
-                stage.setScene(new Scene(loader.load(), 600, 395));
-
-                LogFormController controller = loader.getController();
-                controller.initTour(selectedTour);
-                controller.initData((Log)log);
-                stage.show();
-                stage.setOnHiding(e -> {
-                    refresh();
-                    setLogs();
-                });
-            }catch (IOException e){
-                e.printStackTrace();
-            }
+            createLogWindow("/views/logForm.fxml","Logeintrag updaten",Optional.of((Log)log));
         }else {
             addLog();
         }
@@ -262,6 +210,48 @@ public class MainViewModel {
         try {
             summarizeReport.print(selectedTour);
         } catch (FileNotFoundException e) {
+            logger.error(e);
+        }
+    }
+    private Pair<FXMLLoader,Stage> createWindow(String resource,String title) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
+        Stage stage = new Stage();
+        stage.setTitle(title);
+        stage.setScene(new Scene(loader.load(), 600, 400));
+        return new Pair<>(loader,stage);
+    }
+
+    private void createLogWindow(String resource, String title, Optional<Log> log){
+        try{
+            var gui = createWindow(resource,title);
+            LogFormController controller = gui.getKey().getController();
+            controller.initTour(selectedTour);
+            log.ifPresent(controller::initData);
+            gui.getValue().show();
+            gui.getValue().setOnHiding(e -> {
+                refresh();
+                setLogs();
+            });
+        }catch (IOException e){
+            logger.error(e);
+        }
+    }
+
+    public void createTourWindow(String resource,String title, boolean update){
+        try{
+            var gui = createWindow(resource,title);
+            if(update) {
+                FormController controller = gui.getKey().getController();
+                controller.initData(selectedTour);
+            }
+            gui.getValue().show();
+            gui.getValue().setOnHiding(e ->{
+                refresh();
+                if(!update){
+                    select(manager.getLast());
+                }
+            });
+        }catch (IOException e){
             logger.error(e);
         }
     }

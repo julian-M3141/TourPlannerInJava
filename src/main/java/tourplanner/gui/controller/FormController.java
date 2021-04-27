@@ -8,11 +8,13 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextFormatter;
 import tourplanner.gui.viewmodels.FormViewModel;
 import tourplanner.models.Tour;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.UnaryOperator;
 
 public class FormController implements Initializable {
     private final FormViewModel viewmodel = new FormViewModel();
@@ -61,6 +63,8 @@ public class FormController implements Initializable {
                         description.getText().trim().isEmpty(),description.textProperty()
                 )))))
         );
+
+
     }
 
     public void saveData(ActionEvent actionEvent){

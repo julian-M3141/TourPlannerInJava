@@ -1,22 +1,10 @@
 ToDo - Liste
 
-* Config File and Config Class
-URL url = Main(oder andere class).class.getResource(url with leading /)
-InputStream stream = Main.class.getClassLoader().getResourceAsStream(ur without leading /)
-
-* Logs aktualisieren nach update
-* data access optimieren (interface verkleinern)
-* business layer factory erstellen mit dao, search ins business layer verschieben
 * mainviewmodel updaten
-* resources nach resources verschieben
 
-* nach delete selected tour updaten
-* Summarize Report
-* Config File
 * teils deutsch/teils englisch
 * delete wenn noch keine tour ausgewählt wurde -> Lösung ist selectedTour zu deleten/updaten
 * Kommentare!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-* Klasse zur Berechnung von Pace,Geschwindigkeit, Kalorien
 * Moduls statt packages
 * dependency injection / spring boot
 
@@ -26,16 +14,15 @@ Kleinere ToDos:
 * PDF aufhübschen und Daten ausbessern
 * Suche abbrechen button
 * Fenster auf Größe bearbeiten
-* Menuitem delete tour funktioniert nicht
 * distance aus request holen
 * alert je nach situation
 * nach delete tour auswählen
-* bei tourmap auf flscshe eingaben überprüfen
+* bei tourmap auf falsche eingaben überprüfen
 * Zielordner bei export und print auf Downloads setzen
+* filechooser für import
 
 
 Fragen:
-* Für Formular ein eigenes Fenster?
 * Textsuche in der DB?
 * Businesslayer Klasse als Manager erstellen oder im MVM?
 
