@@ -24,6 +24,6 @@ public class EnergyConsumption {
         //assumption: weight bag: 10kg
         // gradient: 20%
         int w = log.getWeight();
-        return 0.86*(1.5*w+2*(w+10)*Math.pow((10./w),2)+1.2*(w+10)*(1.5*Math.pow(LogData.getAverageSpeed(log)/3.6,2)+3.5*30));
+        return 0.86*(1.5*w+2*(w+10)*Math.pow((10./w),2)+1.2*(w+10)*(1.5*Math.pow(LogData.getAverageSpeed(log)/3.6,2)+0.35*LogData.getAverageSpeed(log)/3.6*20));
     }
 }
