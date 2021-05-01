@@ -16,7 +16,7 @@
             HBox.hgrow="NEVER"/>
     <Button fx:id="deleteLog" minWidth="29.0" mnemonicParsing="false" onAction="#deleteLog"
             text="-" HBox.hgrow="NEVER"/>
-    <Button mnemonicParsing="false" onAction="#updateLog" text="[]" HBox.hgrow="NEVER"/>
+    <Button fx:id="updateLog" mnemonicParsing="false" onAction="#updateLog" text="[]" HBox.hgrow="NEVER"/>
 </HBox>
 <TableView fx:id="logs" layoutY="26.0" prefHeight="200.0" prefWidth="200.0"
            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"

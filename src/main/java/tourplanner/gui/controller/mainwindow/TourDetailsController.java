@@ -2,6 +2,7 @@ package tourplanner.gui.controller.mainwindow;
 
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
@@ -9,14 +10,26 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import tourplanner.gui.viewmodels.MainViewModel;
+import tourplanner.gui.viewmodels.mainwindow.TourDetailsViewModel;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class TourDetailsController implements Initializable {
-    private final MainViewModel model = MainViewModel.Instance();
+    //    private final MainViewModel model = MainViewModel.Instance();
 
+    @FXML
+    private LogDetailsController logDetailsController;
+
+    public LogDetailsController getLogDetailsController() {
+        return logDetailsController;
+    }
+
+
+
+    private final TourDetailsViewModel model = new TourDetailsViewModel();
     public HBox hboxtourname;
+
     public Label tourtitle;
     public GridPane gridpanedata;
     public Label start;
@@ -26,7 +39,6 @@ public class TourDetailsController implements Initializable {
     public Label description;
     public AnchorPane imagepane;
     public ImageView image;
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -44,6 +56,12 @@ public class TourDetailsController implements Initializable {
         image.fitHeightProperty().bind(imagepane.heightProperty());
         //logs
 
+    }
+
+
+
+    public TourDetailsViewModel getModel() {
+        return model;
     }
 
     public void updateTour(ActionEvent actionEvent) {

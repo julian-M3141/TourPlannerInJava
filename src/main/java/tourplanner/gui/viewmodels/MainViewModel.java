@@ -1,14 +1,7 @@
 package tourplanner.gui.viewmodels;
 
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
@@ -17,141 +10,103 @@ import tourplanner.businessLayer.report.BasicTourReport;
 import tourplanner.businessLayer.ImportExportTour;
 import tourplanner.businessLayer.manager.AppManagerFactory;
 import tourplanner.businessLayer.manager.IAppManger;
+import tourplanner.businessLayer.report.IReport;
 import tourplanner.businessLayer.report.SummarizeReport;
+import tourplanner.gui.TourButtonListener;
 import tourplanner.gui.controller.FormController;
 import tourplanner.gui.controller.LogFormController;
+import tourplanner.gui.viewmodels.mainwindow.*;
 import tourplanner.models.Log;
 import tourplanner.models.Tour;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 public class MainViewModel {
 
-    private final StringProperty search = new SimpleStringProperty("");
-    private final ObjectProperty<Image> image = new SimpleObjectProperty<>();
-    private final StringProperty tourname = new SimpleStringProperty("");
-    private final StringProperty finish = new SimpleStringProperty("");
-    private final StringProperty start = new SimpleStringProperty("");
-    private final StringProperty distance = new SimpleStringProperty("");
-    private final StringProperty description = new SimpleStringProperty("");
-    private Tour selectedTour;
+    private final SearchBarViewModel searchBarViewModel;
+    private final TourListViewModel tourListViewModel;
+    private final TourDetailsViewModel tourDetailsViewModel;
+    private final LogDetailsViewModel logDetailsViewModel;
+    private final MenuBarViewModel menuBarViewModel;
+
     private final IAppManger manager = AppManagerFactory.getManager();
     private final ImportExportTour handler = new ImportExportTour();
-    private final BasicTourReport report = new BasicTourReport();
-    private final SummarizeReport summarizeReport = new SummarizeReport();
+    private final IReport report = new BasicTourReport();
+    private final IReport summarizeReport = new SummarizeReport();
+    private final TourButtonListener tourButtonListener = new TourButtonListener() {
+        @Override
+        public void createNewTour() {
+            MainViewModel.this.newTour();
+        }
+
+        @Override
+        public void updateTour() {
+            MainViewModel.this.updateTour();
+        }
+
+        @Override
+        public void deleteTour() {
+            MainViewModel.this.deleteTour();
+        }
+    };
 
     private final Logger logger;
 
-    private final ObservableList<Tour> data = FXCollections.observableArrayList(manager.getAll());
-
-    private final ObservableList<Log> logs = FXCollections.observableArrayList();
 
     //constructor
-    private MainViewModel(){
-        //set tour and data
-        if(data.size()>0) {
-            selectedTour = data.get(0);
-            setTourData();
-            setLogs();
-        }
+    public MainViewModel(SearchBarViewModel searchBarViewModel, TourListViewModel tourListViewModel
+            , TourDetailsViewModel tourDetailsViewModel, LogDetailsViewModel logDetailsViewModel, MenuBarViewModel menuBarViewModel){
+        //get logger
         logger = LogManager.getLogger(MainViewModel.class);
-    }
-    private static MainViewModel model;
-    public static MainViewModel Instance(){
-        if(model==null){
-            model = new MainViewModel();
-        }
-        return model;
-    }
-
-    private void setTourData(){
-        tourname.set(selectedTour.getName());
-        finish.set(selectedTour.getFinish());
-        start.set(selectedTour.getStart());
-        distance.set(selectedTour.getDistance() + " km");
-        description.set(selectedTour.getDescription());
-        try {
-            image.set(new Image(new FileInputStream("pics/"+selectedTour.getImage())));
-        } catch (FileNotFoundException e) {
-            //e.printStackTrace();
-            logger.error("No image available for tour '"+tourname.get() +"', set default image");
-            try {
-                image.set(new Image(Objects.requireNonNull(MainViewModel.class.getClassLoader().getResourceAsStream("pics/test.jpeg"))));
-            }catch (NullPointerException n){
-                logger.fatal("Cannot find default image");
+        //assign viewmodel objects
+        this.searchBarViewModel = searchBarViewModel;
+        this.tourListViewModel = tourListViewModel;
+        this.tourDetailsViewModel = tourDetailsViewModel;
+        this.logDetailsViewModel = logDetailsViewModel;
+        this.menuBarViewModel = menuBarViewModel;
+        //set listeners
+        this.searchBarViewModel.addListener(this::search);
+        this.tourListViewModel.addTourButtonListener(tourButtonListener);
+        this.tourDetailsViewModel.addTourButtonListener(tourButtonListener);
+        this.menuBarViewModel.addTourButtonListener(tourButtonListener);
+        this.tourListViewModel.addSelectionChangedListener((x,y,selectedTour) -> this.tourDetailsViewModel.setTour(selectedTour));
+        this.tourListViewModel.addSelectionChangedListener((x,y,selectedTour) -> {
+            if(selectedTour!=null){
+                this.logDetailsViewModel.setLogs(selectedTour.getLogs());
             }
+        });
+        this.menuBarViewModel.setExportFile(this::export);
+        this.menuBarViewModel.setImportFile(this::importFile);
+        this.menuBarViewModel.setTourReport(this::print);
+        this.menuBarViewModel.setSummarizeReport(this::summarizeReport);
+        this.menuBarViewModel.setAddLogButton(this::addLog);
+        this.logDetailsViewModel.setAddLogButton(this::addLog);
+        this.logDetailsViewModel.setUpdateLogButton(this::updateLog);
+        this.logDetailsViewModel.setDeleteLogButton(this::deleteLog);
+        //set tours
+        var data = manager.getAll();
+        this.tourListViewModel.setTours(data);
+        if(data.size()>0) {
+            this.tourDetailsViewModel.setTour(data.get(0));
+            this.logDetailsViewModel.setLogs(data.get(0).getLogs());
         }
     }
 
-    public StringProperty searchProperty() {
-        return search;
-    }
-    public ObjectProperty<Image> imageProperty() {
-        return image;
+    public void search(String searchValue){
+        tourListViewModel.setTours(manager.search(searchValue));
     }
 
-    private void setLogs() {
-        logs.clear();
-        logs.addAll(selectedTour.getLogs());
-    }
 
-    public ObservableList<Tour> getData() {
-        return data;
-    }
-
-    public Tour getTour() {
-        return selectedTour;
-    }
-    public ObservableList<Log> getLogs() {
-        return logs;
-    }
-    public void search(){
-        data.clear();
-        data.addAll(manager.search(search.get()));
-        search.set("");
-    }
-
-    public void select(Object selectedItem){
-        if(selectedItem != null) {
-            selectedTour = (Tour) selectedItem;
-            setTourData();
-            setLogs();
-        }
-    }
-
-    public StringProperty tournameProperty() {
-        return tourname;
-    }
-
-    public StringProperty finishProperty() {
-        return finish;
-    }
-
-    public StringProperty startProperty() {
-        return start;
-    }
-
-    public StringProperty distanceProperty() {
-        return distance;
-    }
-
-    public StringProperty descriptionProperty() {
-        return description;
-    }
-
-    public void deleteLog(Object log) {
-        manager.delete(selectedTour,(Log)log );
+    public void deleteLog(Log log) {
+        manager.delete(tourDetailsViewModel.getSelectedTour(),log );
         refresh();
-        setLogs();
     }
 
     public void print(){
         try {
-            report.print(selectedTour);
+            report.print(tourDetailsViewModel.getSelectedTour());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -159,7 +114,7 @@ public class MainViewModel {
 
     public void export(){
         try {
-            handler.export(selectedTour,selectedTour.getName().replace(' ','_')+".json");
+            handler.export(tourDetailsViewModel.getSelectedTour(),tourDetailsViewModel.getSelectedTour().getName()+".json");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -168,22 +123,29 @@ public class MainViewModel {
         try {
             manager.save(handler.importTour(filename));
             refresh();
-            select(manager.getLast());
+            tourDetailsViewModel.setTour(manager.getLast());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
     public void deleteTour() {
-        manager.delete(selectedTour);
+        manager.delete(tourDetailsViewModel.getSelectedTour());
         refresh();
     }
 
     public void refresh(){
-        data.clear();
-        data.addAll(manager.getAll());
-        Optional<Tour> t = manager.get(selectedTour.getId());
-        t.ifPresent(this::select);
+        Tour oldtour = tourDetailsViewModel.getSelectedTour();
+        var tourlist = manager.getAll();
+        tourListViewModel.setTours(tourlist);
+        Optional<Tour> tour = manager.get(oldtour.getId());
+        if(tour.isPresent()){
+            tourDetailsViewModel.setTour(tour.get());
+            logDetailsViewModel.setLogs(tour.get().getLogs());
+        }else if(tourlist.size()>0){
+            tourDetailsViewModel.setTour(tourlist.get(0));
+            logDetailsViewModel.setLogs(tourlist.get(0).getLogs());
+        }
     }
 
     public void newTour(){
@@ -198,7 +160,7 @@ public class MainViewModel {
         createLogWindow("/views/logForm.fxml","Neuen Logeintrag erstellen",Optional.empty());
     }
 
-    public void updateLog(Object log) {
+    public void updateLog(Log log) {
         if(log != null){
             createLogWindow("/views/logForm.fxml","Logeintrag updaten",Optional.of((Log)log));
         }else {
@@ -208,11 +170,13 @@ public class MainViewModel {
 
     public void summarizeReport() {
         try {
-            summarizeReport.print(selectedTour);
+            summarizeReport.print(tourDetailsViewModel.getSelectedTour());
         } catch (FileNotFoundException e) {
             logger.error(e);
         }
     }
+
+
     private Pair<FXMLLoader,Stage> createWindow(String resource,String title) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
         Stage stage = new Stage();
@@ -225,12 +189,11 @@ public class MainViewModel {
         try{
             var gui = createWindow(resource,title);
             LogFormController controller = gui.getKey().getController();
-            controller.initTour(selectedTour);
+            controller.initTour(tourDetailsViewModel.getSelectedTour());
             log.ifPresent(controller::initData);
             gui.getValue().show();
             gui.getValue().setOnHiding(e -> {
                 refresh();
-                setLogs();
             });
         }catch (IOException e){
             logger.error(e);
@@ -242,13 +205,13 @@ public class MainViewModel {
             var gui = createWindow(resource,title);
             if(update) {
                 FormController controller = gui.getKey().getController();
-                controller.initData(selectedTour);
+                controller.initData(tourDetailsViewModel.getSelectedTour());
             }
             gui.getValue().show();
             gui.getValue().setOnHiding(e ->{
                 refresh();
                 if(!update){
-                    select(manager.getLast());
+                    tourDetailsViewModel.setTour(manager.getLast());
                 }
             });
         }catch (IOException e){

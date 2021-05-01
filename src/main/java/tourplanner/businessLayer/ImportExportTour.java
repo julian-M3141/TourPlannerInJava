@@ -32,15 +32,13 @@ public class ImportExportTour {
     public void export(Tour tour, String filename) throws IOException {
         //do some coding here...
         logger.info("Export Tour '"+tour.getName()+"'");
+        filename = filename.replace(' ','_');
         FileHandler.saveNewFile("",filename,tour.toJSON().toString());
     }
 
     private Tour toTour(JSONObject obj){
         JSONArray j_logs = obj.getJSONArray("logs");
         ArrayList<Log> logs = new ArrayList<>();
-//        for(Object o : j_logs){
-//            logs.add(toLog((JSONObject) o));
-//        }
         for(int i=0;i<j_logs.length();++i){
             logs.add(toLog(j_logs.getJSONObject(i)));
         }

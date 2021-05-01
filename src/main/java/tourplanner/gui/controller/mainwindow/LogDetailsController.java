@@ -1,9 +1,8 @@
 package tourplanner.gui.controller.mainwindow;
 
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
@@ -12,10 +11,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.util.Callback;
 import tourplanner.businessLayer.EnergyConsumption;
 import tourplanner.businessLayer.LogData;
-import tourplanner.gui.viewmodels.MainViewModel;
+import tourplanner.gui.viewmodels.mainwindow.LogDetailsViewModel;
 import tourplanner.models.Log;
 import tourplanner.models.Sport;
 import tourplanner.models.Weather;
@@ -27,11 +25,16 @@ import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class LogDetailsController implements Initializable {
-    private final MainViewModel model = MainViewModel.Instance();
+    private final LogDetailsViewModel model = new LogDetailsViewModel();
+    public LogDetailsViewModel getModel() {
+        return model;
+    }
+
 
     public HBox hboxlog;
     public Button addLog;
     public Button deleteLog;
+    public Button updateLog;
     public TableView<Log> logs;
     public TableColumn<Log, LocalDateTime> date;
     public TableColumn<Log,Integer> time;
@@ -143,7 +146,8 @@ public class LogDetailsController implements Initializable {
             }
         });
         logs.setItems(model.getLogs());
-
+        deleteLog.disableProperty().bind(logs.getSelectionModel().selectedItemProperty().isNull());
+        updateLog.disableProperty().bind(logs.getSelectionModel().selectedItemProperty().isNull());
     }
 
     public void deleteLog(ActionEvent actionEvent) {

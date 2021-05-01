@@ -4,13 +4,20 @@ import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextInputDialog;
 import tourplanner.gui.viewmodels.MainViewModel;
+import tourplanner.gui.viewmodels.mainwindow.MenuBarViewModel;
 
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MenuBarController implements Initializable {
-    private final MainViewModel model = MainViewModel.Instance();
+    //private final MainViewModel model = MainViewModel.Instance();
+
+    private final MenuBarViewModel model = new MenuBarViewModel();
+    public MenuBarViewModel getModel() {
+        return model;
+    }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

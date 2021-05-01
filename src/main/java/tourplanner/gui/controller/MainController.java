@@ -1,36 +1,34 @@
 package tourplanner.gui.controller;
 
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-
-import javafx.event.ActionEvent;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.util.Callback;
+import tourplanner.gui.controller.mainwindow.*;
 import tourplanner.gui.viewmodels.MainViewModel;
-import tourplanner.models.Log;
-import tourplanner.models.Sport;
-import tourplanner.models.Tour;
-import tourplanner.models.Weather;
 
-import java.io.File;
 import java.net.URL;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class MainController implements Initializable {
-    private final MainViewModel viewModel = MainViewModel.Instance();
+public class MainController implements Initializable  {
+
+    @FXML
+    private SearchBarController searchBarController;
+
+    @FXML
+    private MenuBarController menuBarController;
+
+    @FXML
+    private TourListController tourListController;
+
+    @FXML
+    private TourDetailsController tourDetailsController;
+
+
+    private MainViewModel viewModel;
 
     private final DoubleProperty scale = new SimpleDoubleProperty(1);
     private final DoubleProperty fontsize = new SimpleDoubleProperty(20);
@@ -47,6 +45,8 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        viewModel = new MainViewModel(searchBarController.getModel(),tourListController.getModel(),tourDetailsController.getModel()
+                , tourDetailsController.getLogDetailsController().getModel(), menuBarController.getModel());
         //do some scaling
         anchorpane.setStyle("-fx-font-size: "+ 12 * 2);
         searchBar.setLayoutY(58);

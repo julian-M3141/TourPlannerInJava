@@ -19,10 +19,10 @@ import java.util.Optional;
 import org.apache.logging.log4j.Logger;
 
 public class AppManager implements IAppManger {
-    private Status status;
+    private final Status status;
     private final ITourDataAccess tourAccess;
     private final ILogDataAccess logAccess;
-    private Logger logger;
+    private final Logger logger;
     public AppManager(Status status){
         IDataAccessFactory factory = (status == Status.DB)? new DBAccessFactory() : new DataAccessMockedFactory();
         this.status = status;
@@ -30,6 +30,9 @@ public class AppManager implements IAppManger {
         logAccess = factory.getLogAccess();
         logger = LogManager.getLogger(AppManager.class);
         logger.info("starting AppManager");
+    }
+    public AppManager(){
+        this(Status.DB);
     }
 
     @Override
@@ -53,7 +56,6 @@ public class AppManager implements IAppManger {
         String finish = (params.get("Bis")!=null)?params.get("Bis"):tour.getFinish();
         //check if tour endpoints changed
         if((!(tour.getStart().equals(start)))||(!(tour.getFinish().equals(finish)))){
-            System.out.println("Update image");
             String filename = tour.getImage();
             String newImage = new TourMap().getImage(start, finish);
             if(!newImage.isEmpty()) {
