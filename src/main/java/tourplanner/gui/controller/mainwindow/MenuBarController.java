@@ -2,12 +2,9 @@ package tourplanner.gui.controller.mainwindow;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TextInputDialog;
-import tourplanner.gui.viewmodels.MainViewModel;
 import tourplanner.gui.viewmodels.mainwindow.MenuBarViewModel;
 
 import java.net.URL;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MenuBarController implements Initializable {
@@ -25,12 +22,7 @@ public class MenuBarController implements Initializable {
     }
 
     public void importFile(ActionEvent actionEvent) {
-        TextInputDialog dialog = new TextInputDialog(".json");
-        dialog.setTitle("Tour importieren");
-        dialog.setContentText("Enter the filename:");
-
-        Optional<String> result = dialog.showAndWait();
-        result.ifPresent(model::importFile);
+        model.importFile();
     }
 
     public void export(ActionEvent actionEvent) {

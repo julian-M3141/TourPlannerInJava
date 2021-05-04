@@ -11,13 +11,9 @@ ToDo - Liste
 
 
 Kleinere ToDos:
-* Suche abbrechen button
-* Formular Fenster auf Größe bearbeiten
 * distance aus request holen
 * alert je nach situation
 * Zielordner bei export und print auf Downloads setzen
-* filechooser für import
-
 
 Fragen:
 * Textsuche in der DB?

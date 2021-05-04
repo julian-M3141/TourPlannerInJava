@@ -6,11 +6,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/views/MainWindow.fxml"));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/views/MainWindow.fxml")));
         primaryStage.setTitle("TourPlanner");
         primaryStage.setScene(new Scene(root, 1200, 1100));
         primaryStage.setMinWidth(1200);

@@ -2,13 +2,12 @@ package tourplanner.gui.viewmodels.mainwindow;
 
 import tourplanner.gui.ButtonListener;
 import tourplanner.gui.TourButtonListener;
-import tourplanner.models.Tour;
 
 import java.util.function.Consumer;
 
 public class MenuBarViewModel {
     private TourButtonListener tourButtonListener;
-    private Consumer<String> importFile;
+    private ButtonListener importFile;
     private ButtonListener exportFile;
     private ButtonListener tourReport;
     private ButtonListener summarizeReport;
@@ -19,7 +18,7 @@ public class MenuBarViewModel {
         this.tourButtonListener = tourButtonListener;
     }
 
-    public void setImportFile(Consumer<String> importFile) {
+    public void setImportFile(ButtonListener importFile) {
         this.importFile = importFile;
     }
 
@@ -40,8 +39,8 @@ public class MenuBarViewModel {
     }
 
 
-    public void importFile(String filename) {
-        importFile.accept(filename);
+    public void importFile() {
+        importFile.listen();
     }
 
     public void export() {

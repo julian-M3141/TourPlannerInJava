@@ -5,7 +5,6 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TextField;
@@ -39,7 +38,6 @@ public class LogFormViewModel {
     private final IAppManger manager = AppManagerFactory.getManager();
     private final ObservableList<String> ratinglist = FXCollections.observableList(Arrays.asList("*","**","***","****","*****"));
     private final ObservableList<String> weatherlist = FXCollections.observableList(Arrays.asList("Sunny","Rain","Cloudy","Foggy","Snowfall"));
-
     private final ObservableList<String> sportslist = FXCollections.observableList(Arrays.asList("Running","Bicycle","Hiking"));
     private Tour editedTour = null;
 
@@ -124,8 +122,6 @@ public class LogFormViewModel {
         }
     }
 
-
-
     public void setLog(Log log) {
         this.update = true;
         this.log = log;
@@ -141,9 +137,6 @@ public class LogFormViewModel {
         weight.set(String.valueOf(log.getWeight()));
         height.set(String.valueOf(log.getHeight()));
     }
-
-
-
 
     public String getTime() {
         return time.get();
@@ -220,7 +213,6 @@ public class LogFormViewModel {
     public ObservableList<String> getRatinglist() {
         return ratinglist;
     }
-
 
     public LocalDate getDate() {
         return date.get();

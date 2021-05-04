@@ -3,6 +3,7 @@ package tourplanner.gui.viewmodels;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
@@ -20,6 +21,7 @@ import tourplanner.gui.viewmodels.mainwindow.*;
 import tourplanner.models.Log;
 import tourplanner.models.Tour;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
@@ -117,16 +119,18 @@ public class MainViewModel {
         tourListViewModel.setTours(manager.search(searchValue));
     }
 
-    public void deleteLog(Log log) {
-        manager.delete(tourDetailsViewModel.getSelectedTour(),log );
-        refresh();
-    }
-
     public void print(){
         try {
             report.print(tourDetailsViewModel.getSelectedTour());
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    public void summarizeReport() {
+        try {
+            summarizeReport.print(tourDetailsViewModel.getSelectedTour());
+        } catch (FileNotFoundException e) {
+            logger.error(e);
         }
     }
 
@@ -137,19 +141,19 @@ public class MainViewModel {
             e.printStackTrace();
         }
     }
-    public void importFile(String filename) {
-        try {
-            manager.save(handler.importTour(filename));
-            refresh();
-            tourDetailsViewModel.setTour(manager.getLast());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+    public void importFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose a tour");
+        File file = fileChooser.showOpenDialog(root.getScene().getWindow());
+        if(file!=null) {
+            try {
+                manager.save(handler.importTour(file.getAbsolutePath()));
+                refresh();
+                tourDetailsViewModel.setTour(manager.getLast());
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
-    }
-
-    public void deleteTour() {
-        manager.delete(tourDetailsViewModel.getSelectedTour());
-        refresh();
     }
 
     public void refresh(){
@@ -169,15 +173,17 @@ public class MainViewModel {
     public void newTour(){
         createTourWindow("/views/tourForm.fxml","Tour erstellen",false);
     }
-
     public void updateTour(){
         createTourWindow("/views/tourForm.fxml","Tour bearbeiten",true);
+    }
+    public void deleteTour() {
+        manager.delete(tourDetailsViewModel.getSelectedTour());
+        refresh();
     }
 
     public void addLog() {
         createLogWindow("/views/logForm.fxml","Neuen Logeintrag erstellen",Optional.empty());
     }
-
     public void updateLog(Log log) {
         if(log != null){
             createLogWindow("/views/logForm.fxml","Logeintrag updaten",Optional.of(log));
@@ -185,15 +191,10 @@ public class MainViewModel {
             addLog();
         }
     }
-
-    public void summarizeReport() {
-        try {
-            summarizeReport.print(tourDetailsViewModel.getSelectedTour());
-        } catch (FileNotFoundException e) {
-            logger.error(e);
-        }
+    public void deleteLog(Log log) {
+        manager.delete(tourDetailsViewModel.getSelectedTour(),log );
+        refresh();
     }
-
 
     private Pair<FXMLLoader,Stage> createWindow(String resource,String title) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
@@ -202,7 +203,6 @@ public class MainViewModel {
         stage.setScene(new Scene(loader.load(), 1200, 800));
         return new Pair<>(loader,stage);
     }
-
     private void createLogWindow(String resource, String title, Optional<Log> log){
         try{
             var gui = createWindow(resource,title);
@@ -219,7 +219,6 @@ public class MainViewModel {
             logger.error(e);
         }
     }
-
     public void createTourWindow(String resource,String title, boolean update){
         try{
             var gui = createWindow(resource,title);

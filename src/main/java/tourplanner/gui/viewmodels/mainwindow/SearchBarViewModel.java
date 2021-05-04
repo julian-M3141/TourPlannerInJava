@@ -9,6 +9,13 @@ import java.util.List;
 public class SearchBarViewModel {
     private final StringProperty search = new SimpleStringProperty("");
 
+    public void clearSearch() {
+        for(var listener : listeners){
+            listener.search("");
+        }
+        search.set("");
+    }
+
     public interface SearchListener{
         void search(String search);
     }
@@ -19,10 +26,6 @@ public class SearchBarViewModel {
         listeners.add(listener);
     }
 
-    public String getSearch() {
-        return search.get();
-    }
-
     public StringProperty searchProperty() {
         return search;
     }
@@ -31,5 +34,6 @@ public class SearchBarViewModel {
         for(var listener : listeners){
             listener.search(search.get());
         }
+        search.set("");
     }
 }
