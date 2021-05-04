@@ -11,9 +11,9 @@
           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <Label minWidth="30.0" text="Tours"/>
         <Region prefHeight="42.0" prefWidth="18.0" HBox.hgrow="ALWAYS"/>
-        <Button mnemonicParsing="false" onAction="#newTour" text="+"/>
-        <Button minWidth="29.0" mnemonicParsing="false" onAction="#deleteTour" text="-"/>
-        <Button mnemonicParsing="false" onAction="#updateTour" text="[]"/>
+        <Button fx:id="newTour" mnemonicParsing="false" onAction="#newTour" text="+"/>
+        <Button fx:id="deleteTour" minWidth="29.0" mnemonicParsing="false" onAction="#deleteTour" text="-"/>
+        <Button fx:id="updateTour" mnemonicParsing="false" onAction="#updateTour" text="[]"/>
     </HBox>
     <ListView fx:id="tourlist" layoutX="-48.0" layoutY="42.0" prefHeight="200.0" prefWidth="200.0"
               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"

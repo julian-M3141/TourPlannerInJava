@@ -2,7 +2,6 @@ package tourplanner.gui.controller.mainwindow;
 
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
@@ -48,11 +47,13 @@ public class LogDetailsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        //scaling
         hboxlog.setMinHeight(hboxlog.getMinHeight()*1.5);
         AnchorPane.setTopAnchor(logs,AnchorPane.getTopAnchor(logs)*1.5);
         Arrays.asList(date,time,rating,weather,sport,steps,pace,speed,energy).forEach(
                 x -> x.setMinWidth(x.getPrefWidth()*2)
         );
+        //set cells
         date.setCellFactory(column -> {
             TableCell<Log, LocalDateTime> cell = new TableCell<Log, LocalDateTime>() {
                 private DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm");

@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import tourplanner.gui.controller.mainwindow.*;
 import tourplanner.gui.viewmodels.MainViewModel;
 
@@ -45,7 +46,7 @@ public class MainController implements Initializable  {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        viewModel = new MainViewModel(searchBarController.getModel(),tourListController.getModel(),tourDetailsController.getModel()
+        viewModel = new MainViewModel(anchorpane, searchBarController.getModel(),tourListController.getModel(),tourDetailsController.getModel()
                 , tourDetailsController.getLogDetailsController().getModel(), menuBarController.getModel());
         //do some scaling
         anchorpane.setStyle("-fx-font-size: "+ 12 * 2);

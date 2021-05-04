@@ -2,6 +2,7 @@ package tourplanner.gui.controller.mainwindow;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
@@ -11,6 +12,7 @@ import tourplanner.gui.viewmodels.mainwindow.TourListViewModel;
 import tourplanner.models.Tour;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class TourListController implements Initializable {
@@ -20,6 +22,10 @@ public class TourListController implements Initializable {
     private final TourListViewModel model = new TourListViewModel();
     public ListView<Tour> tourlist;
     public HBox hboxtourbar;
+    public Button newTour;
+    public Button deleteTour;
+    public Button updateTour;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         hboxtourbar.setMinHeight(hboxtourbar.getPrefHeight()*1.5);
@@ -43,6 +49,7 @@ public class TourListController implements Initializable {
         });
         //tourlist.setOnMouseClicked(mouseEvent -> model.select(tourlist.getSelectionModel().getSelectedItem()));
         tourlist.getSelectionModel().selectedItemProperty().addListener(model.getChangeListener());
+        Arrays.asList(updateTour,deleteTour).forEach(t->t.disableProperty().bind(tourlist.getSelectionModel().selectedItemProperty().isNull()));
     }
 
     public TourListViewModel getModel() {

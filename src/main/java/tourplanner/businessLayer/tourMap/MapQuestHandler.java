@@ -36,7 +36,7 @@ public class MapQuestHandler {
         var http = createHttpRequest("http://www.mapquestapi.com/directions/v2/route?key="+key+"&from="+from+"&to="+to);
         //send request
         HttpResponse<String> response = http.getKey().send(http.getValue(), HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
+        //System.out.println(response.body());
         if(new JSONObject(response.body()).getJSONObject("info").getInt("statuscode")!= 0){
             throw new IllegalArgumentException("cannot find route");
         }

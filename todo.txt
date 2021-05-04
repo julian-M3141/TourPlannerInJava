@@ -11,13 +11,10 @@ ToDo - Liste
 
 
 Kleinere ToDos:
-* PDF aufhübschen und Daten ausbessern
 * Suche abbrechen button
-* Fenster auf Größe bearbeiten
+* Formular Fenster auf Größe bearbeiten
 * distance aus request holen
 * alert je nach situation
-* nach delete tour auswählen
-* bei tourmap auf falsche eingaben überprüfen
 * Zielordner bei export und print auf Downloads setzen
 * filechooser für import
 

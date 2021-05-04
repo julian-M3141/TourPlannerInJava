@@ -3,6 +3,7 @@ package tourplanner.dataAccess.db;
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import tourplanner.dataAccess.dao.ILogDataAccess;
 import tourplanner.dataAccess.dao.ITourDataAccess;
 import tourplanner.models.Tour;
 
@@ -134,6 +135,15 @@ public class TourDBAccess implements ITourDataAccess {
             statement.setString(6,tour.getImage());
             statement.execute();
             //select all corresponding logs
+
+            if(tour.getLogs()!=null) {
+                //newtour as id from tour is -1
+                Tour newTour = getLast();
+                ILogDataAccess logDataAccess = LogDBAccess.getInstance();
+                for (var log : tour.getLogs()) {
+                    logDataAccess.save(newTour, log);
+                }
+            }
         } catch (SQLException | IOException throwables) {
             logger.error(throwables);
         }

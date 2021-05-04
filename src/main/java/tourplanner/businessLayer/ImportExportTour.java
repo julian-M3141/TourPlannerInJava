@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class ImportExportTour {
-    private Logger logger;
+    private final Logger logger;
     public ImportExportTour(){
         logger = LogManager.getLogger(ImportExportTour.class);
     }

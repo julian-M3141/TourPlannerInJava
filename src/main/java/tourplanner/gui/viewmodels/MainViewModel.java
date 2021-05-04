@@ -2,6 +2,7 @@ package tourplanner.gui.viewmodels;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
@@ -30,7 +31,7 @@ public class MainViewModel {
     private final TourDetailsViewModel tourDetailsViewModel;
     private final LogDetailsViewModel logDetailsViewModel;
     private final MenuBarViewModel menuBarViewModel;
-
+    private final Pane root;
     private final IAppManger manager = AppManagerFactory.getManager();
     private final ImportExportTour handler = new ImportExportTour();
     private final IReport report = new BasicTourReport();
@@ -51,40 +52,58 @@ public class MainViewModel {
             MainViewModel.this.deleteTour();
         }
     };
-
     private final Logger logger;
 
 
     //constructor
-    public MainViewModel(SearchBarViewModel searchBarViewModel, TourListViewModel tourListViewModel
+    public MainViewModel(Pane root, SearchBarViewModel searchBarViewModel, TourListViewModel tourListViewModel
             , TourDetailsViewModel tourDetailsViewModel, LogDetailsViewModel logDetailsViewModel, MenuBarViewModel menuBarViewModel){
         //get logger
         logger = LogManager.getLogger(MainViewModel.class);
+        this.root = root;
         //assign viewmodel objects
         this.searchBarViewModel = searchBarViewModel;
         this.tourListViewModel = tourListViewModel;
         this.tourDetailsViewModel = tourDetailsViewModel;
         this.logDetailsViewModel = logDetailsViewModel;
         this.menuBarViewModel = menuBarViewModel;
+
         //set listeners
+        setUpSearchBarAndTourDetails();
+        setUpTourList();
+        setUpLogDetails();
+        setUpMenuBar();
+
+        //setup window data by filling lists
+        setUpWindowData();
+    }
+    private void setUpSearchBarAndTourDetails(){
         this.searchBarViewModel.addListener(this::search);
-        this.tourListViewModel.addTourButtonListener(tourButtonListener);
         this.tourDetailsViewModel.addTourButtonListener(tourButtonListener);
-        this.menuBarViewModel.addTourButtonListener(tourButtonListener);
-        this.tourListViewModel.addSelectionChangedListener((x,y,selectedTour) -> this.tourDetailsViewModel.setTour(selectedTour));
-        this.tourListViewModel.addSelectionChangedListener((x,y,selectedTour) -> {
+    }
+    private void setUpTourList(){
+        tourListViewModel.addTourButtonListener(tourButtonListener);
+        tourListViewModel.addSelectionChangedListener((x,y,selectedTour) -> tourDetailsViewModel.setTour(selectedTour));
+        tourListViewModel.addSelectionChangedListener((x,y,selectedTour) -> {
             if(selectedTour!=null){
-                this.logDetailsViewModel.setLogs(selectedTour.getLogs());
+                logDetailsViewModel.setLogs(selectedTour.getLogs());
             }
         });
+    }
+    private void setUpLogDetails(){
+        this.logDetailsViewModel.setAddLogButton(this::addLog);
+        this.logDetailsViewModel.setUpdateLogButton(this::updateLog);
+        this.logDetailsViewModel.setDeleteLogButton(this::deleteLog);
+    }
+    private void setUpMenuBar(){
+        this.menuBarViewModel.addTourButtonListener(tourButtonListener);
         this.menuBarViewModel.setExportFile(this::export);
         this.menuBarViewModel.setImportFile(this::importFile);
         this.menuBarViewModel.setTourReport(this::print);
         this.menuBarViewModel.setSummarizeReport(this::summarizeReport);
         this.menuBarViewModel.setAddLogButton(this::addLog);
-        this.logDetailsViewModel.setAddLogButton(this::addLog);
-        this.logDetailsViewModel.setUpdateLogButton(this::updateLog);
-        this.logDetailsViewModel.setDeleteLogButton(this::deleteLog);
+    }
+    private void setUpWindowData(){
         //set tours
         var data = manager.getAll();
         this.tourListViewModel.setTours(data);
@@ -97,7 +116,6 @@ public class MainViewModel {
     public void search(String searchValue){
         tourListViewModel.setTours(manager.search(searchValue));
     }
-
 
     public void deleteLog(Log log) {
         manager.delete(tourDetailsViewModel.getSelectedTour(),log );
@@ -162,7 +180,7 @@ public class MainViewModel {
 
     public void updateLog(Log log) {
         if(log != null){
-            createLogWindow("/views/logForm.fxml","Logeintrag updaten",Optional.of((Log)log));
+            createLogWindow("/views/logForm.fxml","Logeintrag updaten",Optional.of(log));
         }else {
             addLog();
         }
@@ -181,7 +199,7 @@ public class MainViewModel {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
         Stage stage = new Stage();
         stage.setTitle(title);
-        stage.setScene(new Scene(loader.load(), 600, 400));
+        stage.setScene(new Scene(loader.load(), 1200, 800));
         return new Pair<>(loader,stage);
     }
 
@@ -192,8 +210,10 @@ public class MainViewModel {
             controller.initTour(tourDetailsViewModel.getSelectedTour());
             log.ifPresent(controller::initData);
             gui.getValue().show();
+            root.setDisable(true);
             gui.getValue().setOnHiding(e -> {
                 refresh();
+                root.setDisable(false);
             });
         }catch (IOException e){
             logger.error(e);
@@ -208,11 +228,13 @@ public class MainViewModel {
                 controller.initData(tourDetailsViewModel.getSelectedTour());
             }
             gui.getValue().show();
+            root.setDisable(true);
             gui.getValue().setOnHiding(e ->{
                 refresh();
                 if(!update){
                     tourDetailsViewModel.setTour(manager.getLast());
                 }
+                root.setDisable(false);
             });
         }catch (IOException e){
             logger.error(e);
