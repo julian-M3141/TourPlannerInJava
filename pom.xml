@@ -6,7 +6,13 @@
 
     <groupId>at.technikumwien</groupId>
     <artifactId>TourPlannerInJava</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>TourPlannerInJava.BusinessLayer</module>
+        <module>TourPlannerInJava.DataAccessLayer</module>
+        <module>TourPlannerInJava.GUI</module>
+    </modules>
 
     <name>TourplannerApp</name>
 
@@ -40,19 +46,9 @@
             <type>pom</type>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>2.12.3</version>
-        </dependency>
-        <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.2.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.liferay</groupId>
-            <artifactId>com.fasterxml.jackson.databind</artifactId>
-            <version>2.10.0.LIFERAY-PATCHED-1</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

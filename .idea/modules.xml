@@ -3,6 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/TourPlannerInJava.iml" filepath="$PROJECT_DIR$/TourPlannerInJava.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TourPlannerInJava.BusinessLayer/TourPlannerInJava.BusinessLayer.iml" filepath="$PROJECT_DIR$/TourPlannerInJava.BusinessLayer/TourPlannerInJava.BusinessLayer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TourPlannerInJava.DataAccessLayer/TourPlannerInJava.DataAccessLayer.iml" filepath="$PROJECT_DIR$/TourPlannerInJava.DataAccessLayer/TourPlannerInJava.DataAccessLayer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TourPlannerInJava.GUI/TourPlannerInJava.GUI.iml" filepath="$PROJECT_DIR$/TourPlannerInJava.GUI/TourPlannerInJava.GUI.iml" />
     </modules>
   </component>
 </project>

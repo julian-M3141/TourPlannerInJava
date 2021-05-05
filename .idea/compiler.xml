@@ -6,11 +6,16 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="TourPlannerInJava" />
+        <module name="TourPlannerInJava.DataAccessLayer" />
+        <module name="TourPlannerInJava.BusinessLayer" />
+        <module name="TourPlannerInJava.GUI" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="TourPlannerInJava" target="15" />
+      <module name="TourPlannerInJava.BusinessLayer" target="15" />
+      <module name="TourPlannerInJava.DataAccessLayer" target="15" />
+      <module name="TourPlannerInJava.GUI" target="15" />
     </bytecodeTargetLevel>
   </component>
 </project>

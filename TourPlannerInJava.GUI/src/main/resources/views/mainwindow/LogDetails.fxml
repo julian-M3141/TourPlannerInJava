@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="gui.controller.mainwindow.LogDetailsController"
+            minHeight="140.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+<HBox fx:id="hboxlog" alignment="CENTER_RIGHT" maxHeight="26.0" minHeight="26.0" prefHeight="26.0"
+      prefWidth="436.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+      AnchorPane.topAnchor="0.0">
+    <Label minWidth="30.0" prefHeight="16.0" prefWidth="186.0" text="Logs" HBox.hgrow="NEVER"/>
+    <Region minWidth="0.0" prefHeight="26.0" prefWidth="296.0" HBox.hgrow="ALWAYS"/>
+    <Button fx:id="addLog" mnemonicParsing="false" onAction="#addLog" text="+"
+            HBox.hgrow="NEVER"/>
+    <Button fx:id="deleteLog" minWidth="29.0" mnemonicParsing="false" onAction="#deleteLog"
+            text="-" HBox.hgrow="NEVER"/>
+    <Button fx:id="updateLog" mnemonicParsing="false" onAction="#updateLog" text="[]" HBox.hgrow="NEVER"/>
+</HBox>
+<TableView fx:id="logs" layoutY="26.0" prefHeight="200.0" prefWidth="200.0"
+           AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+           AnchorPane.topAnchor="26.0">
+    <columns>
+        <TableColumn fx:id="date" prefWidth="75.0" text="Date"/>
+        <TableColumn fx:id="time" prefWidth="95.0" text="Total time"/>
+        <TableColumn fx:id="rating" prefWidth="55.0" text="Rating"/>
+        <TableColumn fx:id="weather" prefWidth="75.0" text="Wetter"/>
+        <TableColumn fx:id="sport" prefWidth="75.0" text="Sport"/>
+        <TableColumn fx:id="steps" prefWidth="75.0" text="Schritte"/>
+        <TableColumn fx:id="pace" prefWidth="75.0" text="Pace"/>
+        <TableColumn fx:id="speed" prefWidth="75.0" text="Speed"/>
+        <TableColumn fx:id="energy" prefWidth="75.0" text="Energy"/>
+    </columns>
+</TableView>
+</AnchorPane>

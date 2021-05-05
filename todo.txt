@@ -3,9 +3,7 @@ ToDo - Liste
 * mainviewmodel updaten
 
 * teils deutsch/teils englisch
-* delete wenn noch keine tour ausgewählt wurde -> Lösung ist selectedTour zu deleten/updaten
 * Kommentare!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-* Moduls statt packages
 * dependency injection / spring boot
 
 

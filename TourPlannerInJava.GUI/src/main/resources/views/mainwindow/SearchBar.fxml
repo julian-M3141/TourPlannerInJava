@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox fx:id="hbox" alignment="CENTER_RIGHT" layoutY="29.0" maxHeight="42.0" minHeight="42.0" prefHeight="42.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.mainwindow.SearchBarController">
+    <TextField fx:id="searchbox" promptText="Search" HBox.hgrow="ALWAYS" />
+    <Button fx:id="searchButton" defaultButton="true" mnemonicParsing="false" onAction="#search" text="Search" HBox.hgrow="NEVER">
+    </Button>
+   <Button mnemonicParsing="false" onAction="#clearSearch" text="Clear" />
+</HBox>
