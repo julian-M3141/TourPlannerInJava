@@ -1,21 +1,20 @@
 ToDo - Liste
 
-* mainviewmodel updaten
-
-* teils deutsch/teils englisch
+* unit tests schreiben
+* suche verfeinern
+* pdf export ausbessern in gui
+* logs verfeinern
+* max length bei user input
+* Dokumentation schreiben
 * Kommentare!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 * dependency injection / spring boot
-
+* jackson library statt json
 
 
 Kleinere ToDos:
 * distance aus request holen
 * alert je nach situation
 * Zielordner bei export und print auf Downloads setzen
-
-Fragen:
-* Textsuche in der DB?
-* Businesslayer Klasse als Manager erstellen oder im MVM?
 
 #DataBase
 #src: https://medium.com/coding-blocks/creating-user-database-and-adding-access-on-postgresql-8bfcd2f4a91e
@@ -73,16 +72,5 @@ MapQuestHandler
   .createRouteRequest(from,to), returns BoundingBox (lr,ul,distance)
   .createStaticMap, returns Image
 
-public Object create(Class<?> controllerClass) {
-if (controllerClass == MainWindowController.class) {
-return new MainWindowController(mainWindowViewModel);
-} else if (controllerClass == SearchBarController.class) {
-return new SearchBarController(searchBarViewModel);
-} else if (controllerClass == TourDetailsController.class) {
-return new TourDetailsController(tourDetailsViewModel);
-} else if (controllerClass == ToursOverviewController.class) {
-return new ToursOverviewController(toursOverviewViewModel);
-}
-throw new IllegalArgumentException("Unknown controller class: " + controllerClass); }
 
 

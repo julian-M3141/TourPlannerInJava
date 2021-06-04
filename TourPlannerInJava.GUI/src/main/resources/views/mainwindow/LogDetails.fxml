@@ -5,7 +5,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="gui.controller.mainwindow.LogDetailsController"
+            fx:controller="at.technikum.gui.controller.mainwindow.LogDetailsController"
             minHeight="140.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
 <HBox fx:id="hboxlog" alignment="CENTER_RIGHT" maxHeight="26.0" minHeight="26.0" prefHeight="26.0"
       prefWidth="436.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"

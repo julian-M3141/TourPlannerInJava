@@ -2,20 +2,34 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="TourPlannerInJava.DataAccessLayer" />
         <module name="TourPlannerInJava.BusinessLayer" />
+        <module name="RESTServer" />
+        <module name="TourPlannerInJava.DataAccessLayer" />
+        <module name="TourPlannerInJava.HttpServer" />
         <module name="TourPlannerInJava.GUI" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="RESTServer" target="11" />
       <module name="TourPlannerInJava" target="15" />
       <module name="TourPlannerInJava.BusinessLayer" target="15" />
       <module name="TourPlannerInJava.DataAccessLayer" target="15" />
       <module name="TourPlannerInJava.GUI" target="15" />
+      <module name="TourPlannerInJava.HttpServer" target="15" />
+      <module name="webserver" target="11" />
     </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="RESTServer" options="-parameters" />
+      <module name="TourPlannerInJava.BusinessLayer" options="-parameters" />
+      <module name="TourPlannerInJava.DataAccessLayer" options="-parameters" />
+      <module name="webserver" options="-parameters" />
+    </option>
   </component>
 </project>

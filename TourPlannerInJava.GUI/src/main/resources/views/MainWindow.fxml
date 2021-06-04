@@ -5,7 +5,7 @@
 
 <AnchorPane fx:id="anchorpane" minHeight="550.0" minWidth="600.0"
             prefHeight="550.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.MainController">
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.gui.controller.MainController">
     <fx:include fx:id="menuBar" source="mainwindow/MenuBar.fxml"/>
     <fx:include fx:id="searchBar" source="mainwindow/SearchBar.fxml" AnchorPane.leftAnchor="5.0"
                 AnchorPane.rightAnchor="5.0"/>

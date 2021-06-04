@@ -5,7 +5,7 @@
 
 <MenuBar xmlns="http://javafx.com/javafx"
          xmlns:fx="http://javafx.com/fxml"
-         fx:controller="gui.controller.mainwindow.MenuBarController"
+         fx:controller="at.technikum.gui.controller.mainwindow.MenuBarController"
          prefHeight="400.0" prefWidth="600.0"
          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
     <Menu mnemonicParsing="false" text="File">
