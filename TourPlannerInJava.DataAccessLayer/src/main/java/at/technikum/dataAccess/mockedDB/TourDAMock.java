@@ -102,20 +102,23 @@ public class TourDAMock implements ITourDataAccess {
 
     @Override
     public void update(Tour tour, Map<String, String> params) {
-        if(params.get("Tourname")!=null){
+        if(params.containsKey("Tourname")){
             tour.setName(params.get("Tourname"));
         }
-        if(params.get("Beschreibung")!=null){
+        if(params.containsKey("Beschreibung")){
             tour.setDescription(params.get("Beschreibung"));
         }
-        if(params.get("Von")!=null){
+        if(params.containsKey("Von")){
             tour.setStart(params.get("Von"));
         }
-        if(params.get("Bis")!=null){
+        if(params.containsKey("Bis")){
             tour.setFinish(params.get("Bis"));
         }
-        if(params.get("Distanz")!=null){
+        if(params.containsKey("Distanz")){
             tour.setDistance(Integer.parseInt(params.get("Distanz")));
+        }
+        if(params.containsKey("Bild")){
+            tour.setImage(params.get("Bild"));
         }
     }
 
@@ -147,7 +150,7 @@ public class TourDAMock implements ITourDataAccess {
                         tmp.add(t);
                         break;
                     }
-                }catch (NumberFormatException e){}
+                }catch (NumberFormatException ignored){}
             }
         }
         return tmp;

@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import at.technikum.models.Log;
 import at.technikum.models.Tour;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;

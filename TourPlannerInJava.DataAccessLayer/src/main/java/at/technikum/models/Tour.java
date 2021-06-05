@@ -1,10 +1,17 @@
 package at.technikum.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+
+@Getter
+@Setter
+@AllArgsConstructor
 public class Tour {
 
     //private member variables
@@ -21,28 +28,8 @@ public class Tour {
         super();
     }
 
-    //constructor
-    public Tour(int id, String name, String description, String start, String finish, int distance, String image, ArrayList<Log> logs) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.start = start;
-        this.finish = finish;
-        this.distance = distance;
-        this.image = image;
-        this.logs = logs;
-    }
-
     public Tour(String name, String description, String start, String finish, int distance) {
-        this.name = name;
-        this.description = description;
-        this.start = start;
-        this.finish = finish;
-        this.distance = distance;
-    }
-
-    public ArrayList<Log> getLogs() {
-        return logs;
+        this(-1,name,description,start,finish,distance,"",new ArrayList<>());
     }
 
 
@@ -107,62 +94,6 @@ public class Tour {
         }
 
     };
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getStart() {
-        return start;
-    }
-
-    public void setStart(String start) {
-        this.start = start;
-    }
-
-    public String getFinish() {
-        return finish;
-    }
-
-    public void setFinish(String finish) {
-        this.finish = finish;
-    }
-
-    public int getDistance() {
-        return distance;
-    }
-
-    public void setDistance(int distance) {
-        this.distance = distance;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
 
     public JSONObject toJSON(){
         JSONObject obj = new JSONObject();

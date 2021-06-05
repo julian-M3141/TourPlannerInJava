@@ -12,7 +12,6 @@
         <module>TourPlannerInJava.BusinessLayer</module>
         <module>TourPlannerInJava.DataAccessLayer</module>
         <module>TourPlannerInJava.GUI</module>
-        <module>TourPlannerInJava.HttpServer</module>
     </modules>
 
     <name>TourplannerApp</name>

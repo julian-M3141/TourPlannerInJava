@@ -1,10 +1,17 @@
 package at.technikum.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.json.JSONObject;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+
+@Getter
+@Setter
+@AllArgsConstructor
 public class Log {
     //private member variables
     private int id;
@@ -18,20 +25,6 @@ public class Log {
     private int height;
     private Sport sport;
     private int steps;
-
-    //constructor
-    public Log(int id, LocalDateTime time, int rating, int timeinminutes, int distance, Weather weather, int weight, int height, Sport sport, int steps) {
-        this.id = id;
-        this.time = time;
-        this.rating = rating;
-        this.timeinminutes = timeinminutes;
-        this.distance = distance;
-        this.weather = weather;
-        this.weight = weight;
-        this.height = height;
-        this.sport = sport;
-        this.steps = steps;
-    }
 
     public Log() {
         super();
@@ -106,88 +99,6 @@ public class Log {
             }
             return new Log(id,time,rating,timeinminutes,distance,weather,weight,height,sport,steps);
         }
-    }
-
-    //some getters and setters
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getTime() {
-        return time;
-    }
-
-    public void setTime(LocalDateTime time) {
-        this.time = time;
-    }
-
-    public int getRating() {
-        return rating;
-    }
-
-    public void setRating(int rating) {
-        this.rating = rating;
-    }
-
-    public int getTimeinminutes() {
-        return timeinminutes;
-    }
-
-    public void setTimeinminutes(int timeinminutes) {
-        this.timeinminutes = timeinminutes;
-    }
-
-    public int getDistance() {
-        return distance;
-    }
-
-    public void setDistance(int distance) {
-        this.distance = distance;
-    }
-
-    public Weather getWeather() {
-        return weather;
-    }
-
-    public void setWeather(Weather weather) {
-        this.weather = weather;
-    }
-
-    public int getWeight() {
-        return weight;
-    }
-
-    public void setWeight(int weight) {
-        this.weight = weight;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public Sport getSport() {
-        return sport;
-    }
-
-    public void setSport(Sport sport) {
-        this.sport = sport;
-    }
-
-    public int getSteps() {
-        return steps;
-    }
-
-    public void setSteps(int steps) {
-        this.steps = steps;
     }
 
     public JSONObject toJSON() {

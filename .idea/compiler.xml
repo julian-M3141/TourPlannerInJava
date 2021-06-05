@@ -10,7 +10,6 @@
         <module name="TourPlannerInJava.BusinessLayer" />
         <module name="RESTServer" />
         <module name="TourPlannerInJava.DataAccessLayer" />
-        <module name="TourPlannerInJava.HttpServer" />
         <module name="TourPlannerInJava.GUI" />
       </profile>
     </annotationProcessing>

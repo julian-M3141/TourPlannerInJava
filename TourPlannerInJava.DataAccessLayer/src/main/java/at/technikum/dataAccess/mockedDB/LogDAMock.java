@@ -22,32 +22,32 @@ public class LogDAMock implements ILogDataAccess {
     }
     @Override
     public void update(Log log, Map<String, String> params) {
-        if(params.get("Datum")!=null){
+        if(params.containsKey("Datum")){
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm");
             log.setTime(LocalDateTime.parse(params.get("Datum"), formatter));
         }
-        if(params.get("Rating")!=null){
+        if(params.containsKey("Rating")){
             log.setRating(Integer.parseInt(params.get("Rating")));
         }
-        if(params.get("Zeit")!=null){
+        if(params.containsKey("Zeit")){
             log.setTimeinminutes(Integer.parseInt(params.get("Zeit")));
         }
-        if(params.get("Distanz")!=null){
+        if(params.containsKey("Distanz")){
             log.setDistance(Integer.parseInt(params.get("Distanz")));
         }
-        if(params.get("Weather")!=null){
+        if(params.containsKey("Weather")){
             log.setWeather(Weather.valueOf(params.get("Weather")));
         }
-        if(params.get("Weight")!=null){
+        if(params.containsKey("Weight")){
             log.setWeight(Integer.parseInt(params.get("Weight")));
         }
-        if(params.get("Height")!=null){
+        if(params.containsKey("Height")){
             log.setHeight(Integer.parseInt(params.get("Height")));
         }
-        if(params.get("Sport")!=null){
+        if(params.containsKey("Sport")){
             log.setSport(Sport.valueOf(params.get("Sport")));
         }
-        if(params.get("Steps")!=null){
+        if(params.containsKey("Steps")){
             log.setSteps(Integer.parseInt(params.get("Steps")));
         }
     }

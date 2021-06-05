@@ -7,7 +7,6 @@
       <module fileurl="file://$PROJECT_DIR$/TourPlannerInJava.BusinessLayer/TourPlannerInJava.BusinessLayer.iml" filepath="$PROJECT_DIR$/TourPlannerInJava.BusinessLayer/TourPlannerInJava.BusinessLayer.iml" />
       <module fileurl="file://$PROJECT_DIR$/TourPlannerInJava.DataAccessLayer/TourPlannerInJava.DataAccessLayer.iml" filepath="$PROJECT_DIR$/TourPlannerInJava.DataAccessLayer/TourPlannerInJava.DataAccessLayer.iml" />
       <module fileurl="file://$PROJECT_DIR$/TourPlannerInJava.GUI/TourPlannerInJava.GUI.iml" filepath="$PROJECT_DIR$/TourPlannerInJava.GUI/TourPlannerInJava.GUI.iml" />
-      <module fileurl="file://$PROJECT_DIR$/TourPlannerInJava.HttpServer/TourPlannerInJava.HttpServer.iml" filepath="$PROJECT_DIR$/TourPlannerInJava.HttpServer/TourPlannerInJava.HttpServer.iml" />
     </modules>
   </component>
 </project>

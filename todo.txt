@@ -1,6 +1,7 @@
 ToDo - Liste
 
 * unit tests schreiben
+* FileAccess abstrahieren und beim Testen anders gestalten
 * suche verfeinern
 * pdf export ausbessern in gui
 * logs verfeinern

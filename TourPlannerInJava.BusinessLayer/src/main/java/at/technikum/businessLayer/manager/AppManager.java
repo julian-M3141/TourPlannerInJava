@@ -11,6 +11,10 @@ import at.technikum.models.Log;
 import at.technikum.models.Tour;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,17 +30,6 @@ public class AppManager implements IAppManger {
     private final ILogDataAccess logAccess;
     private final ITourMap map;
     private final Logger logger;
-
-
-
-//    public AppManager(Status status){
-////        IDataAccessFactory factory = (status == Status.DB)? new DBAccessFactory() : new DataAccessMockedFactory();
-//        this.status = status;
-//        tourAccess = factory.getTourAccess();
-//        logAccess = factory.getLogAccess();
-//        logger = LogManager.getLogger(AppManager.class);
-//        logger.info("starting AppManager");
-//    }
 
     @Autowired
     public AppManager(IDataAccessFactory dataAccessFactory,ITourMap map){
@@ -64,12 +57,18 @@ public class AppManager implements IAppManger {
 
     @Override
     public void update(Tour tour, HashMap<String, String> params) {
-        String start = (params.get("Von")!=null)?params.get("Von"):tour.getStart();
-        String finish = (params.get("Bis")!=null)?params.get("Bis"):tour.getFinish();
+        String[] indeces = {"Tourname","Beschreibung","Von","Bis","Distanz"};
+        List.of(indeces).forEach(x ->{
+            if(params.containsKey(x) && params.get(x).isEmpty()){
+                throw new IllegalArgumentException("parameter " +x+ " is empty!");
+            }
+        });
+        String start = (params.containsKey("Von"))?params.get("Von"):tour.getStart();
+        String finish = (params.containsKey("Bis"))?params.get("Bis"):tour.getFinish();
         //check if tour endpoints changed
         if((!(tour.getStart().equals(start)))||(!(tour.getFinish().equals(finish)))){
             String filename = tour.getImage();
-            String newImage = new TourMap().getImage(start, finish);
+            String newImage = map.getImage(start, finish);
             if(!newImage.isEmpty()) {
                 params.put("Bild", newImage);
             }else{
@@ -115,6 +114,28 @@ public class AppManager implements IAppManger {
 
     @Override
     public void update(Log log, HashMap<String, String> params) {
+        params.keySet().forEach(x -> {
+            if(params.get(x).isEmpty()){
+                logger.error("Parameter " + x + " is empty!");
+                throw new IllegalArgumentException("Parameter " + x + " is empty!");
+            }
+        });
+        if(params.containsKey("Datum")){
+            String format = "dd.MM.yyyy, HH:mm";
+            try{
+                LocalDateTime.parse(params.get("Datum"), DateTimeFormatter.ofPattern(format));
+            }catch (DateTimeParseException e){
+                throw new IllegalArgumentException("Date has the wrong format: "+params.get("Datum"));
+            }
+        }
+        List.of("Rating","Zeit","Distanz","Weight","Height","Steps").forEach(x->{
+            if(params.containsKey(x) && !isInteger(params.get(x))){
+                throw new IllegalArgumentException("Parameter " + x + " must be an Integer, actual value: " + params.get(x));
+            }
+            if(params.containsKey(x) && Integer.parseInt(params.get(x))<0){
+                throw new IllegalArgumentException("Parameter "+ x + ", must be positive, instead it is "+ params.get(x));
+            }
+        });
         logger.info("Updated log with ID '"+log.getId()+"'");
         logAccess.update(log,params);
     }
@@ -130,5 +151,14 @@ public class AppManager implements IAppManger {
         logger.info("Deleted log with ID '"+log.getId()+"'");
         logAccess.delete(tour,log);
         //tour is unnecessary
+    }
+
+    private boolean isInteger(String string){
+        try{
+            Integer.parseInt(string);
+            return true;
+        }catch (NumberFormatException e){
+            return false;
+        }
     }
 }
