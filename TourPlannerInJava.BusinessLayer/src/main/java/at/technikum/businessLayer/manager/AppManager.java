@@ -1,9 +1,8 @@
 package at.technikum.businessLayer.manager;
 
 import at.technikum.businessLayer.tourMap.ITourMap;
-import at.technikum.businessLayer.tourMap.TourMap;
+import at.technikum.dataAccess.fileAccess.IFileHandler;
 import org.apache.logging.log4j.LogManager;
-import at.technikum.dataAccess.*;
 import at.technikum.dataAccess.dao.IDataAccessFactory;
 import at.technikum.dataAccess.dao.ILogDataAccess;
 import at.technikum.dataAccess.dao.ITourDataAccess;
@@ -11,7 +10,6 @@ import at.technikum.models.Log;
 import at.technikum.models.Tour;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -29,11 +27,13 @@ public class AppManager implements IAppManger {
     private final ITourDataAccess tourAccess;
     private final ILogDataAccess logAccess;
     private final ITourMap map;
+    private final IFileHandler fileHandler;
     private final Logger logger;
 
     @Autowired
-    public AppManager(IDataAccessFactory dataAccessFactory,ITourMap map){
+    public AppManager(IDataAccessFactory dataAccessFactory,ITourMap map,IFileHandler fileHandler){
         this.map = map;
+        this.fileHandler = fileHandler;
         tourAccess = dataAccessFactory.getTourAccess();
         logAccess = dataAccessFactory.getLogAccess();
         logger = LogManager.getLogger(AppManager.class);
@@ -75,7 +75,7 @@ public class AppManager implements IAppManger {
                 logger.error("Route cannot be found");
             }
             try {
-                FileHandler.delete("pics/",filename);
+                fileHandler.delete("pics/",filename);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -97,7 +97,7 @@ public class AppManager implements IAppManger {
         String filename = tour.getImage();
         if(!(filename == null) && !(filename.isEmpty())){
             try {
-                FileHandler.delete("pics/",filename);
+                fileHandler.delete("pics/",filename);
             } catch (IOException e) {
                 e.printStackTrace();
             }

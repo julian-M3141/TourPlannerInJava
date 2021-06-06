@@ -1,6 +1,7 @@
 package at.technikum.businessLayer.manager;
 
 
+import at.technikum.dataAccess.fileAccess.FileHandlerMocked;
 import at.technikum.businessLayer.tourMap.TourMapMock;
 import at.technikum.dataAccess.mockedDB.DataAccessMockedFactory;
 import at.technikum.models.Log;
@@ -23,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AppManagerTest {
 
-    private IAppManger manager = new AppManager(new DataAccessMockedFactory(),new TourMapMock());
+    private IAppManger manager = new AppManager(new DataAccessMockedFactory(),new TourMapMock(),new FileHandlerMocked());
 
 //    @BeforeEach
 //    public void setup(){

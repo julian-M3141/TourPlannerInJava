@@ -1,6 +1,7 @@
 package at.technikum.businessLayer.manager;
 
 import at.technikum.businessLayer.tourMap.TourMap;
+import at.technikum.dataAccess.fileAccess.FileHandler;
 import at.technikum.dataAccess.db.DBAccessFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,7 +13,7 @@ public class AppManagerFactory {
         if (manager == null){
             Logger logger = LogManager.getLogger(AppManagerFactory.class);
             logger.debug("creating new AppManager");
-            manager = new AppManager(new DBAccessFactory(),new TourMap());
+            manager = new AppManager(new DBAccessFactory(),new TourMap(),new FileHandler());
         }
         return manager;
     }

@@ -1,10 +1,11 @@
 package at.technikum.businessLayer;
 
+import at.technikum.dataAccess.fileAccess.IFileHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import at.technikum.dataAccess.FileHandler;
+import at.technikum.dataAccess.fileAccess.FileHandler;
 import at.technikum.models.Log;
 import at.technikum.models.Sport;
 import at.technikum.models.Tour;
@@ -18,11 +19,12 @@ import java.util.ArrayList;
 
 public class ImportExportTour {
     private final Logger logger;
+    private final IFileHandler fileHandler = new FileHandler();
     public ImportExportTour(){
         logger = LogManager.getLogger(ImportExportTour.class);
     }
     public Tour importTour(String filename) throws FileNotFoundException {
-        String content = FileHandler.read("",filename);
+        String content = fileHandler.read("",filename);
         Tour tour = toTour(new JSONObject(content));
         logger.info("Import Tour '"+tour.getName()+"'");
         return tour;
@@ -33,7 +35,7 @@ public class ImportExportTour {
         //do some coding here...
         logger.info("Export Tour '"+tour.getName()+"'");
         filename = filename.replace(' ','_');
-        FileHandler.saveNewFile("",filename,tour.toJSON().toString());
+        fileHandler.saveNewFile("",filename,tour.toJSON().toString());
     }
 
     private Tour toTour(JSONObject obj){

@@ -20,8 +20,7 @@ public class ReportController {
         var tour = manager.get(tourid);
         if(tour.isPresent()){
             try {
-                var pdf = report.print(tour.get());
-                return pdf;
+                return report.print(tour.get());
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }

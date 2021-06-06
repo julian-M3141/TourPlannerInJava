@@ -1,21 +1,15 @@
 ToDo - Liste
 
-* unit tests schreiben
-* FileAccess abstrahieren und beim Testen anders gestalten
-* suche verfeinern
-* pdf export ausbessern in gui
+* Dokumentation schreiben
+* suche in manager verschieben
 * logs verfeinern
 * max length bei user input
-* Dokumentation schreiben
 * Kommentare!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-* dependency injection / spring boot
-* jackson library statt json
 
 
 Kleinere ToDos:
 * distance aus request holen
 * alert je nach situation
-* Zielordner bei export und print auf Downloads setzen
 
 #DataBase
 #src: https://medium.com/coding-blocks/creating-user-database-and-adding-access-on-postgresql-8bfcd2f4a91e

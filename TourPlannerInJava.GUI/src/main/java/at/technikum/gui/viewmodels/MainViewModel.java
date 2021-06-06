@@ -24,6 +24,7 @@ import at.technikum.models.Tour;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 
@@ -121,7 +122,15 @@ public class MainViewModel {
     }
     public void print(){
         try {
-            report.print(tourDetailsViewModel.getSelectedTour());
+            var content = report.print(tourDetailsViewModel.getSelectedTour());
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Wählen Sie einen Speicherort");
+            fileChooser.setInitialFileName(tourDetailsViewModel.getSelectedTour().getName().replace(' ','_')+".pdf");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF","*.pdf"));
+            var file = fileChooser.showSaveDialog(root.getScene().getWindow());
+            try(var stream = new FileOutputStream(file.getAbsolutePath())){
+                stream.write(content);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -129,14 +138,27 @@ public class MainViewModel {
 
     public void summarizeReport() {
         try {
-            summarizeReport.print(tourDetailsViewModel.getSelectedTour());
-        } catch (FileNotFoundException e) {
-            logger.error(e);
+            var content = summarizeReport.print(tourDetailsViewModel.getSelectedTour());
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Wählen Sie einen Speicherort");
+            fileChooser.setInitialFileName(tourDetailsViewModel.getSelectedTour().getName().replace(' ','_')+"_summarize.pdf");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF","*.pdf"));
+            var file = fileChooser.showSaveDialog(root.getScene().getWindow());
+            try(var stream = new FileOutputStream(file.getAbsolutePath())){
+                stream.write(content);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
     public void export(){
         try {
-            handler.export(tourDetailsViewModel.getSelectedTour(),tourDetailsViewModel.getSelectedTour().getName()+".json");
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Wählen Sie einen Speicherort");
+            fileChooser.setInitialFileName(tourDetailsViewModel.getSelectedTour().getName().replace(' ','_')+".json");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON","*.json"));
+            var file = fileChooser.showSaveDialog(root.getScene().getWindow());
+            handler.export(tourDetailsViewModel.getSelectedTour(),file.getAbsolutePath());
         } catch (IOException e) {
             e.printStackTrace();
         }
